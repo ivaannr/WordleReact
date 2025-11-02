@@ -1,0 +1,16 @@
+.keyboard {
+    border: 1px solid var(--border-dark-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--secondary-dark-color);
+    height: 50vh;
+    width: 20vw;
+    color: var(--text-color);
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
