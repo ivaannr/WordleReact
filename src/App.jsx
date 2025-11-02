@@ -1,5 +1,6 @@
 import './App.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { fetchWord } from './helper'
 import Stack from './Stack'
 import Header from './components/header/header'
 import Footer from './components/footer/footer'
@@ -7,8 +8,14 @@ import MainContainer from './components/main-container/main-container'
 import Keyboard from './components/keyboard/keyboard'
 
 
-function App() {
+export default function App() {
   const [letters, setLetters] = useState(new Stack())
+
+  //const word = fetchWord();
+
+  useEffect(() => {
+      console.log("Letters cambió: ", letters.print());
+  }, [letters]);
 
   return (
     <>
@@ -19,5 +26,3 @@ function App() {
     </>
   )
 }
-
-export default App

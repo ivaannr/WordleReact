@@ -30,9 +30,13 @@ export default class Stack {
         return this.items.indexOf(item);
     }
 
+    print() {
+        return this.items.join("").toString().toUpperCase();
+    }
+
     isEmpty() { return this.items.length === 0; }
 
     size() { return this.items.length; }
     
-    print() { console.log(this.items); }
+    log() { console.log(this.items); }
 }
