@@ -9,40 +9,12 @@ function getColor(state) {
     };
 }
 
-async function fetchWord() {
-    const url = 'https://random-word-api.herokuapp.com/word?length=5&lang=es';
+async function fetchWord(lang) {
+    const url = 'https://random-word-api.herokuapp.com/word?length=5&lang=' + lang;
     const response = await fetch(url);
     const json = await response.json();
-    console.log("Palabra:", json[0])
+    console.log("Word:", json[0])
     return json[0];
-}
-
-function checkWordMatches(word, letters) {
-    const result = []
-    const wordArray = word.split("");
-
-    letters.forEach(letter => {
-        if (wordArray.includes(letter)) {
-
-            result.push(
-                createRecord(
-                    letter,
-                    letters.index(letter),
-                    getLetterState(letter, letters, wordArray)
-                )
-            );
-
-        } else {
-            result.push(
-                createRecord(
-                    letter, letters.index(letter), "miss"
-                )
-            );
-            missedLetters.add(letter);
-        }
-    });
-
-    return result
 }
 
 function getWordMatches(word, letters) {
@@ -51,6 +23,30 @@ function getWordMatches(word, letters) {
     const matches = createMatches(wordArray, letters);
 
     letters.toArray().forEach((letter, index) => {
+
+        const hasLetter = Array.from(matches.values()).includes(letter);
+        
+        console.log(`Letters index: ${letters.get(index)} || Matches index: ${matches.get(index)}`);
+
+        if (!hasLetter) {
+            result.push(
+                createRecord(
+                    letter,
+                    letters.index(letter),
+                    "miss"
+                )
+            );
+        }
+
+        if (hasLetter) {
+            result.push(
+                createRecord(
+                    letter,
+                    letters.index(letter),
+                    "contains"
+                )
+            );
+        }
 
         if (letters.get(index) === matches.get(index)) {
             result.push(
@@ -62,27 +58,11 @@ function getWordMatches(word, letters) {
             );
         }
 
-        const hasLetter = Array.from(matches.values()).includes(letter);
 
-        if (hasLetter && letter !== matches.get(index)) {
-            result.push(
-                createRecord(
-                    letter,
-                    letters.index(letter),
-                    "contains"
-                )
-            );
-        }
 
-        if (!hasLetter) {
-            result.push(
-                createRecord(
-                    letter,
-                    letters.index(letter),
-                    "miss"
-                )
-            );
-        }
+
+
+
     });
 
     return result;

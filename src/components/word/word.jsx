@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from "react";
 import './word.css'
 import Cell from '../letter-cell/cell'
 

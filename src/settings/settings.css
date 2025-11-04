@@ -1,0 +1,40 @@
+.settings {
+    border: 1px solid var(--border-dark-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--secondary-dark-color);
+    height: 50vh;
+    width: 21vw;
+    color: var(--text-color);
+}
+
+.settingsBox {
+    width: 85%;
+    height: 75%;
+    background-color: var(--secondary-dark-color);
+    margin: 5px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-dark-color);
+}
+
+.settingsRow {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    margin: 10px;
+    margin-left: 20px;
+}
+
+.settingsRow > button {
+    margin-left: 10px;
+    margin-top: 3px;
+    border: 1px solid var(--border-dark-color);
+    background-color: var(--primary-dark-color);
+    transform: scale(0.95);
+    padding: 5px;
+}

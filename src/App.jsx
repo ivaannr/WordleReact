@@ -1,13 +1,14 @@
 import './App.css'
+import "react-toastify/dist/ReactToastify.css"
 import { useState, useEffect } from 'react'
 import { fetchWord, getWordMatches, replaceAccents } from './helper'
 import { ToastContainer } from 'react-toastify'
-import "react-toastify/dist/ReactToastify.css"
 import Stack from './Stack'
 import Header from './components/header/header'
 import Footer from './components/footer/footer'
 import MainContainer from './components/main-container/main-container'
 import Keyboard from './components/keyboard/keyboard'
+import Settings from './settings/settings'
 
 export default function App() {
   const [length, setLength] = useState(5);
@@ -16,10 +17,11 @@ export default function App() {
   const [letters, setLetters] = useState(new Stack())
   const [word, setWord] = useState("");
   const [matches, setMatches] = useState([]);
+  const [language, setLanguage] = useState("es");
 
   useEffect(() => {
     const fetchWordAsync = async () => {
-      const w = await fetchWord();
+      const w = await fetchWord(language);
       setWord(w);
     };
 
@@ -29,9 +31,6 @@ export default function App() {
 
   useEffect(() => {
 
-
-
-    console.log("Letters cambió: ", letters.print());
     const formattedWord = replaceAccents(word.toUpperCase());
 
     setMatches(getWordMatches(formattedWord, letters));
@@ -45,6 +44,11 @@ export default function App() {
   return (
     <>
       <Header />
+
+      <Settings 
+        language={language}
+        setLanguage={setLanguage}
+      />
 
       <MainContainer
         letters={letters}
