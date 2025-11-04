@@ -1,10 +1,13 @@
 import React from "react";
 
+let seenLetters = []
+
 function getColor(state) {
     switch (state) {
         case "correct": return "#3fbf00";
         case "misplaced": return "#ff9300";
         case "miss": return "#323232ff";
+        case "empty": return "#202020ff";
     };
 }
 
@@ -22,15 +25,17 @@ function checkWordMatches(word, letters) {
 
     letters.forEach(letter => {
         if (wordArray.includes(letter)) {
-            const expectedIndex = wordArray.indexOf(letter);
 
             result.push(
                 createRecord(
                     letter,
                     letters.index(letter),
-                    getLetterState(letter, letters, expectedIndex)
+                    getLetterState(letter, letters, wordArray)
                 )
             );
+
+            seenLetters.push(letter);
+
         } else {
             result.push(
                 createRecord(
@@ -40,34 +45,40 @@ function checkWordMatches(word, letters) {
         }
     });
 
+    seenLetters = [];
+
     return result
 }
 
-function getLetterState(letter, letters, expectedIndex) {
+function getLetterState(letter, letters, word) {
+
     let state = "contains";
-    if (getLetterCount(letters, letter) <= 1) {
-        if (letters.index(letter) == expectedIndex) {
+
+    const letterCount = getLetterCount(letters.toArray());
+
+    if (letterCount <= 1) {
+        if (letters.index(letter) === word.indexOf(letter)) {
             return "correct";
         }
     } else {
-        
+        if (seenLetters.includes(letter)) {
+            return "miss";
+        }
     }
 
     return state;
 }
 
+
 function createRecord(letter, index, state) {
-    return {
-        letter: letter,
-        index: index,
-        state: state
-    }
+    return { letter, index, state };
 }
 
 function getLetterCount(letters, letter) {
+
     let count = 0;
 
-    for (let i = 0; i < letters.count(); i++) {
+    for (let i = 0; i < letters.length; i++) {
         if (letters[i] === letter) {
             count++;
         }
@@ -96,4 +107,24 @@ function replaceAccents(word) {
     return formattedWord;
 }
 
-export { fetchWord, getColor, checkWordMatches, replaceAccents }
+function createDataRecord(letter, state) {
+    return { letter, state };
+}
+
+function createLettersData(letters, matches) {
+    const lettersArray = letters.toArray();
+    const data = [];
+
+    lettersArray.forEach(() => {
+        data.push(
+            createDataRecord(
+                "L",
+                "correct"
+            )
+        );
+    });
+
+    return data;
+}
+
+export { fetchWord, getColor, checkWordMatches, replaceAccents, createLettersData }

@@ -1,27 +1,24 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import './word.css'
-import Cell from '../../components/letter-cell/cell'
-import ButtonCell from "../cell-button/CellButton";
+import Cell from '../letter-cell/cell'
 
 export default function Word(props) {
-    const divRef = useRef(null);
+  const { currentWordIndex, lettersData, letterID } = props;
 
-    useEffect(() => {
-        if (divRef.current) {
-            const cells = divRef.current.children;
-            Array.from(cells).forEach((cell, i) => {
-                        
-            });
-        }
-    }, []);
+  const isActive = letterID === currentWordIndex;
 
-    return (
-        <div className="letter" ref={divRef}>
-            <Cell state="correct" letter="L" />
-            <Cell state="miss" letter="A" />
-            <Cell state="miss" letter="R" />
-            <Cell state="misplaced" letter="G" />
-            <Cell state="correct" letter="O" />
-        </div>
-    );
+  return (
+    <div className="letter">
+      {Array.from({ length: 5 }).map((_, i) => {
+        const cellData = isActive ? lettersData[i] : { state: "empty", letter: "" };
+        return (
+          <Cell
+            key={i}
+            state={cellData?.state ?? "empty"}
+            letter={cellData?.letter ?? ""}
+          />
+        );
+      })}
+    </div>
+  );
 }

@@ -35,11 +35,15 @@ export default class Stack {
     }
 
     print() {
-        return this.items.join("").toString().toUpperCase();
+        return this.items.join("").toString().toUpperCase() ?? "...";
     }
 
     forEach(callback) {
         this.items.forEach(callback);
+    }
+
+    toArray() {
+        return this.items;
     }
 
     isEmpty() { return this.items.length === 0; }

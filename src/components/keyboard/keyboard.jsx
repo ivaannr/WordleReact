@@ -38,11 +38,29 @@ export default function Keyboard(props) {
                     <ButtonCell letter="C" letters={props.letters} setLetters={props.setLetters} />
                 </div>
                 <div className="row">
-                    <ButtonCell letter="V"  letters={props.letters} setLetters={props.setLetters} />
-                    <ButtonCell letter="B"  letters={props.letters} setLetters={props.setLetters} />
-                    <ButtonCell letter="N"  letters={props.letters} setLetters={props.setLetters} />
-                    <ButtonCell letter="M"  letters={props.letters} setLetters={props.setLetters} />
-                    <ButtonCell letter="⬅️" letters={props.letters} setLetters={props.setLetters} remove={true}/>
+                    <ButtonCell letter="V" letters={props.letters} setLetters={props.setLetters} />
+                    <ButtonCell letter="B" letters={props.letters} setLetters={props.setLetters} />
+                    <ButtonCell letter="N" letters={props.letters} setLetters={props.setLetters} />
+                    <ButtonCell letter="M" letters={props.letters} setLetters={props.setLetters} />
+                </div>
+                <div className="row">
+                    <ButtonCell
+                        letter="✓"
+                        letters={props.letters}
+                        setLetters={props.setLetters}
+                        currentWordIndex={props.currentWordIndex}
+                        setCurrentWordIndex={props.setCurrentWordIndex}
+                        setLettersData={props.setLettersData}
+                        matches={props.matches}
+                        submitWord={true}
+
+                    />
+                    <ButtonCell
+                        letter="⬅"
+                        letters={props.letters}
+                        setLetters={props.setLetters}
+                        remove={true}
+                    />
                 </div>
 
             </div>

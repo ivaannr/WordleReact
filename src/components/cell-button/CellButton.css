@@ -6,7 +6,6 @@ button {
   color: inherit;      
   font: inherit;        
   cursor: pointer;
-  
 }
 
 button:focus {

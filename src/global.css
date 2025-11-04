@@ -1,6 +1,6 @@
 :root {
-  --primary-dark-color: rgb(30, 30, 30);
-  --secondary-dark-color: rgb(27, 27, 27);
+  --primary-dark-color: #1e1e1e;
+  --secondary-dark-color: #1b1b1b;
   --text-color: rgb(212, 212, 212);
   --border-dark-color: #444444;
   --correct-color: #3fbf00;
