@@ -14,7 +14,7 @@ export default function ButtonCell(props) {
         newStack.items = [...props.letters.items];
 
         if (props.submitWord) {
-
+            
             if (props.letters.size() < props.length) {
                 toast.warn("You may fill the word before submitting it.");
                 return;
@@ -32,6 +32,7 @@ export default function ButtonCell(props) {
             );
 
             props.setLetters(emptyStack);
+            props.setCurrentLetterIndex(0);
 
             return;
         }
@@ -44,9 +45,11 @@ export default function ButtonCell(props) {
             }
 
             newStack.push(letter);
+            props.setCurrentLetterIndex(props.currentLetterIndex + 1);
 
         } else {
             newStack.pop();
+            props.setCurrentLetterIndex(props.currentLetterIndex - 1);
         }
 
         props.setLetters(newStack);

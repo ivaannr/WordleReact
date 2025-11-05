@@ -10,14 +10,26 @@ import MainContainer from './components/main-container/main-container'
 import Keyboard from './components/keyboard/keyboard'
 import Settings from './settings/settings'
 
+let indexmap = new Map([
+    [0, { state: "empty", letter: "" }],
+    [1, { state: "empty", letter: "" }],
+    [2, { state: "empty", letter: "" }],
+    [3, { state: "empty", letter: "" }],
+    [4, { state: "empty", letter: "" }],
+    [5, { state: "empty", letter: "" }]
+])
+
 export default function App() {
   const [length, setLength] = useState(5);
-  const [lettersData, setLettersData] = useState([])
-  const [currentWordIndex, setCurrentWordIndex] = useState(-1)
-  const [letters, setLetters] = useState(new Stack())
+  const [lettersData, setLettersData] = useState([]);
+  const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
+  const [currentLetter, setCurrentLetter] = useState("");
+  const [currentWordIndex, setCurrentWordIndex] = useState(-1);
+  const [letters, setLetters] = useState(new Stack());
   const [word, setWord] = useState("");
   const [matches, setMatches] = useState([]);
   const [language, setLanguage] = useState("es");
+  const [previousWords, setPreviousWords] = useState(indexmap);
 
   useEffect(() => {
     const fetchWordAsync = async () => {
@@ -39,13 +51,11 @@ export default function App() {
   }, [letters]);
 
 
-
-
   return (
     <>
       <Header />
 
-      <Settings 
+      <Settings
         language={language}
         setLanguage={setLanguage}
       />
@@ -57,6 +67,12 @@ export default function App() {
         matches={matches}
         lettersData={lettersData}
         length={length}
+        currentLetterIndex={currentLetterIndex}
+        setCurrentLetterIndex={setCurrentLetterIndex}
+        currentLetter={currentLetter}
+        setCurrentLetter={setCurrentLetter}
+        previousWords={previousWords}
+        setPreviousWords={setPreviousWords}
       />
 
       <Keyboard
@@ -67,6 +83,12 @@ export default function App() {
         setLettersData={setLettersData}
         length={length}
         matches={matches}
+        currentLetterIndex={currentLetterIndex}
+        setCurrentLetterIndex={setCurrentLetterIndex}
+        currentLetter={currentLetter}
+        setCurrentLetter={setCurrentLetter}
+        previousWords={previousWords}
+        setPreviousWords={setPreviousWords}
       />
 
       <Footer />

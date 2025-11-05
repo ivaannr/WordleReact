@@ -22,11 +22,10 @@ function getWordMatches(word, letters) {
     const result = [];
     const matches = createMatches(wordArray, letters);
 
-    letters.toArray().forEach((letter, index) => {
-
-        const hasLetter = Array.from(matches.values()).includes(letter);
+    let index = 0;
+    for (const letter of letters.toArray()) {
         
-        console.log(`Letters index: ${letters.get(index)} || Matches index: ${matches.get(index)}`);
+        const hasLetter = Array.from(matches.values()).includes(letter);
 
         if (!hasLetter) {
             result.push(
@@ -36,6 +35,8 @@ function getWordMatches(word, letters) {
                     "miss"
                 )
             );
+            index++;
+            continue;
         }
 
         if (hasLetter) {
@@ -46,6 +47,8 @@ function getWordMatches(word, letters) {
                     "contains"
                 )
             );
+            index++;
+            continue;
         }
 
         if (letters.get(index) === matches.get(index)) {
@@ -56,14 +59,10 @@ function getWordMatches(word, letters) {
                     "correct"
                 )
             );
+            index++;
+            continue;
         }
-
-
-
-
-
-
-    });
+    }
 
     return result;
 }
@@ -136,4 +135,13 @@ function createLettersData(letters, matches) {
     return data;
 }
 
-export { fetchWord, getColor, getWordMatches, replaceAccents, createLettersData }
+function isMatchFinished(data) {
+    return data.every(d => d.state === "correct");
+}
+
+function getMapLastIndex(map) {
+    const keys = Array.from(map.keys());
+    keys.sort((a, b) => a - b);
+    return keys[map.size - 1];
+}
+export { fetchWord, getColor, getWordMatches, replaceAccents, createLettersData, isMatchFinished }
