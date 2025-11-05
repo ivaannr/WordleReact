@@ -14,7 +14,7 @@ export default function ButtonCell(props) {
         newStack.items = [...props.letters.items];
 
         if (props.submitWord) {
-            
+
             if (props.letters.size() < props.length) {
                 toast.warn("You may fill the word before submitting it.");
                 return;
@@ -22,10 +22,22 @@ export default function ButtonCell(props) {
 
             const emptyStack = new Stack();
 
+            const newMap = new Map();
+            props.previousWords.forEach((value, key) => {
+                newMap.set(key, value);
+            });
+
+            newMap.set(
+                props.currentWordIndex,
+                props.matches
+            );
+
+            props.setPreviousWords(newMap);
+
             props.setCurrentWordIndex(props.currentWordIndex + 1);
 
-            props.setLettersData (
-                createLettersData (
+            props.setLettersData(
+                createLettersData(
                     props.letters,
                     props.matches
                 )

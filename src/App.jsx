@@ -40,6 +40,9 @@ export default function App() {
     fetchWordAsync();
   }, []);
 
+  useEffect(() => {
+    console.log("Previous Words:", previousWords);
+  }, [previousWords]);
 
   useEffect(() => {
 
