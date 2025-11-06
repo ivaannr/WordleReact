@@ -4,14 +4,19 @@ import { useEffect } from 'react';
 
 export default function Word(props) {
   const { currentWordIndex, currentLetterIndex, lettersData, letterID, previousWords, length, currentLetter, previousLetters } = props;
-  const isWordActive = letterID === currentWordIndex + 1;
+  const isWordActive = letterID === currentWordIndex;
+  let cellData;
+
+  
 
   return (
     <div className="letter">
       {Array.from({ length }).map((_, i) => {
-        const cellData = (isWordActive 
-          ? lettersData[i]
-          : previousWords.get(letterID)[i] ) ?? { state: "empty", letter: "" };
+
+        cellData = (isWordActive
+        ? lettersData[i]
+        : previousWords.get(letterID)?.[i]) 
+        ?? { state: "empty", letter: "" };
 
         return (
           <Cell
@@ -28,4 +33,5 @@ export default function Word(props) {
       })}
     </div>
   );
+
 }

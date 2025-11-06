@@ -11,13 +11,18 @@ import Keyboard from './components/keyboard/keyboard'
 import Settings from './settings/settings'
 
 let indexmap = new Map([
-    [0, { state: "empty", letter: "" }],
-    [1, { state: "empty", letter: "" }],
-    [2, { state: "empty", letter: "" }],
-    [3, { state: "empty", letter: "" }],
-    [4, { state: "empty", letter: "" }],
-    [5, { state: "empty", letter: "" }]
+  [0, { state: "empty", letter: "" }],
+  [1, { state: "empty", letter: "" }],
+  [2, { state: "empty", letter: "" }],
+  [3, { state: "empty", letter: "" }],
+  [4, { state: "empty", letter: "" }],
+  [5, { state: "empty", letter: "" }]
 ])
+
+let previousLettersMap = new Map([]);
+Array.from(5).forEach((_, i) => {
+  previousLettersMap.set(i, "")
+})
 
 export default function App() {
   const [length, setLength] = useState(5);
@@ -30,20 +35,27 @@ export default function App() {
   const [matches, setMatches] = useState([]);
   const [language, setLanguage] = useState("es");
   const [previousWords, setPreviousWords] = useState(indexmap);
-  const [previousLetters, setPreviousLetters] = useState([]);
+  const [previousLetters, setPreviousLetters] = useState(previousLettersMap);
 
-  useEffect(() => {
-    const fetchWordAsync = async () => {
-      const w = await fetchWord(language);
-      setWord(w);
-    };
+  // Dejar comentado para no saturar la API con peticiones
+  // useEffect(() => {
+  //   const fetchWordAsync = async () => {
+  //     const w = await fetchWord(language);
+  //     setWord(w);
+  //   };
 
-    fetchWordAsync();
-  }, []);
+  //   fetchWordAsync();
+  // }, []);
 
   useEffect(() => {
     console.log("Previous Words:", previousWords);
+
   }, [previousWords]);
+
+    useEffect(() => {
+    console.log("Previous Letters:", previousLetters);
+  }, [previousLetters]);
+6
 
   useEffect(() => {
 
@@ -54,19 +66,11 @@ export default function App() {
 
   }, [letters]);
 
-  useEffect(() => {
-    console.log("Previous Letters:", previousLetters);
-  }, [previousLetters]);
 
 
   return (
     <>
       <Header />
-
-      <Settings
-        language={language}
-        setLanguage={setLanguage}
-      />
 
       <MainContainer
         letters={letters}
