@@ -3,16 +3,14 @@ import Cell from '../letter-cell/cell'
 
 export default function Word(props) {
   const { currentWordIndex, currentLetterIndex, lettersData, letterID, previousWords, length } = props;
-  const isActive = letterID === currentWordIndex;
+  const isActive = letterID === currentWordIndex + 1;
 
   return (
     <div className="letter">
       {Array.from({ length }).map((_, i) => {
-        const cellData = isActive 
+        const cellData = (isActive 
           ? lettersData[i]
-          : previousWords.has(letterID) 
-            ? previousWords.get(letterID)[i] || { state: "empty", letter: "" }
-            : { state: "empty", letter: "" };
+          : previousWords.get(letterID)[i] ) ?? { state: "empty", letter: "" };
 
         return (
           <Cell

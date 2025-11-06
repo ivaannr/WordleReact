@@ -24,7 +24,7 @@ export default function App() {
   const [lettersData, setLettersData] = useState([]);
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
   const [currentLetter, setCurrentLetter] = useState("");
-  const [currentWordIndex, setCurrentWordIndex] = useState(-1);
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [letters, setLetters] = useState(new Stack());
   const [word, setWord] = useState("");
   const [matches, setMatches] = useState([]);
