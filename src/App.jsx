@@ -30,6 +30,7 @@ export default function App() {
   const [matches, setMatches] = useState([]);
   const [language, setLanguage] = useState("es");
   const [previousWords, setPreviousWords] = useState(indexmap);
+  const [previousLetters, setPreviousLetters] = useState([]);
 
   useEffect(() => {
     const fetchWordAsync = async () => {
@@ -52,6 +53,10 @@ export default function App() {
     console.log("Resultado:", matches)
 
   }, [letters]);
+
+  useEffect(() => {
+    console.log("Previous Letters:", previousLetters);
+  }, [previousLetters]);
 
 
   return (
@@ -76,6 +81,8 @@ export default function App() {
         setCurrentLetter={setCurrentLetter}
         previousWords={previousWords}
         setPreviousWords={setPreviousWords}
+        previousLetters={previousLetters}
+        setPreviousLetters={setPreviousLetters}
       />
 
       <Keyboard
@@ -92,6 +99,8 @@ export default function App() {
         setCurrentLetter={setCurrentLetter}
         previousWords={previousWords}
         setPreviousWords={setPreviousWords}
+        previousLetters={previousLetters}
+        setPreviousLetters={setPreviousLetters}
       />
 
       <Footer />

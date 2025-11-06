@@ -33,7 +33,6 @@ export default function ButtonCell(props) {
             );
 
             props.setPreviousWords(newMap);
-
             props.setCurrentWordIndex(props.currentWordIndex + 1);
 
             props.setLettersData(
@@ -46,6 +45,8 @@ export default function ButtonCell(props) {
             props.setLetters(emptyStack);
             props.setCurrentLetterIndex(0);
 
+            props.setPreviousLetters([]);
+
             return;
         }
 
@@ -57,9 +58,24 @@ export default function ButtonCell(props) {
             }
 
             newStack.push(letter);
+            props.setCurrentLetter(letter);
+
+            let prevLetters = props.previousLetters;
+            let prevLettersCopy = [];
+            prevLetters.forEach(e => prevLettersCopy.push(e));
+            prevLettersCopy.push(letter);
+            props.setPreviousLetters(prevLettersCopy);
+
             props.setCurrentLetterIndex(props.currentLetterIndex + 1);
 
         } else {
+
+            let prevLetters = props.previousLetters;
+            let prevLettersCopy = [];
+            prevLetters.forEach(e => prevLettersCopy.push(e));
+            prevLettersCopy.pop();
+            props.setPreviousLetters(prevLettersCopy);
+
             newStack.pop();
             props.setCurrentLetterIndex(props.currentLetterIndex - 1);
         }

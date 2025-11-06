@@ -1,26 +1,42 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import './cell.css'
 import { getColor } from "../../helper";
 
 export default function Cell(props) {
-    const { letter, state, currentLetterIndex } = props;
+    const { letter, letterID, state, currentLetterIndex, currentLetter, isWordActive, previousLetters } = props;
     const color = getColor(state);
-    const headerRef = useRef(null);
+    const isActive = letterID === currentLetterIndex - 1;
 
-    const cell = (
-    <div
-        className="cell"
-        style={{ backgroundColor: color }}
-    >
-        <h1 ref={headerRef}>{letter.toString().toUpperCase()}</h1>
-    </div>
-    );
+    //const assignedLetter = (previousLetters ?? [])[letterID] ?? "";
 
-    
+    //console.log(`The assigned letter to cell with index ${letterID} is ${assignedLetter}`);
 
-    useEffect(() => {
-        headerRef.current.textContent = letter.toString();
-    }, [currentLetterIndex]);
+    if (!isActive) {
+        return (
+            <div
+                className="cell"
+                style={{ backgroundColor: color }}
+            >
+                <h1>
+                    {letter.toString().toUpperCase()}
+                </h1>
+            </div>
+        );
+    }
 
-    return cell;
+    if (isWordActive) {
+        return (
+            <div
+                className="cell"
+                style={{ backgroundColor: color }}
+            >
+                <h1>
+                    {currentLetter} 
+                </h1>
+            </div>
+        );
+    }
+
+
 }
+

@@ -2,7 +2,7 @@ import './main-container.css'
 import Word from '../word/word';
 import { useEffect } from 'react';
 export default function MainContainer(props) {
-  const { currentWordIndex, currentLetterIndex, length, lettersData, previousWords } = props
+  const { currentWordIndex, currentLetterIndex, length, lettersData, previousWords, currentLetter, previousLetters, setPreviousLetters } = props
 
   return (
     <div className="box">
@@ -16,6 +16,9 @@ export default function MainContainer(props) {
             length={length}
             currentLetterIndex={currentLetterIndex}
             previousWords={previousWords}
+            currentLetter={currentLetter}
+            previousLetters={previousLetters}
+            setPreviousLetters={setPreviousLetters}
           />
         )
       })}
