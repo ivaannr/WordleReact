@@ -47,24 +47,43 @@ export default function App() {
   //   fetchWordAsync();
   // }, []);
 
+  // useEffect(() => {
+    
+
+  //   console.log("Matches changed!", matches);
+  //   const formattedWord = replaceAccents(word.toUpperCase());
+  //   const currentMatches = getWordMatches(formattedWord, letters);
+
+  //   console.log("Current matches: ", ...currentMatches)
+
+  //   setMatches(currentMatches);
+
+  // }, []);
+
   useEffect(() => {
-    console.log("Previous Words:", previousWords);
+    //console.log("Previous Words:", previousWords);
 
   }, [previousWords]);
 
-    useEffect(() => {
-    console.log("Previous Letters:", previousLetters);
+  useEffect(() => {
+    //console.log("Previous Letters:", previousLetters);
   }, [previousLetters]);
 
   useEffect(() => {
 
     const formattedWord = replaceAccents(word.toUpperCase());
 
-    setMatches(getWordMatches(formattedWord, letters));
-    console.log("Resultado:", matches)
+    const currentMatches = getWordMatches(formattedWord, letters);
+
+    console.log("Current matches: ", ...currentMatches)
+
+    setMatches(currentMatches);
+
+    console.log("Matches:", matches)
     console.log("Letters:", letters);
 
   }, [letters]);
+
 
 
 
@@ -97,6 +116,7 @@ export default function App() {
         setLettersData={setLettersData}
         length={length}
         matches={matches}
+        e
         currentLetterIndex={currentLetterIndex}
         setCurrentLetterIndex={setCurrentLetterIndex}
         currentLetter={currentLetter}
