@@ -1,5 +1,4 @@
-import { React, useState } from "react";
-import Stack from "../../Stack";
+import { React } from "react";
 import Cell from "../letter-cell/cell";
 import './CellButton.css'
 import { toast } from "react-toastify";
@@ -14,86 +13,73 @@ let indexmap = new Map([
     [5, { state: "empty", letter: "" }]
 ])
 let previousLettersMap = new Map([]);
-Array.from(5).forEach((_, i) => {
+Array.from({ length: 5 }).forEach((_, i) => {
     previousLettersMap.set(i, "")
 })
 
-export default function ButtonCell(props) {
-    const letter = props.letter;
-    const remove = props.remove ?? false;
-
+export default function ButtonCell({
+    letter,
+    remove = false,
+    letters,
+    setLetters,
+    length,
+    currentLetterIndex,
+    setCurrentLetterIndex,
+    currentLetter,
+    setCurrentLetter,
+    previousLetters,
+    setPreviousLetters,
+    submitWord,
+    matches,
+    currentWordIndex,
+    setCurrentWordIndex,
+    setLettersData,
+    previousWords,
+    setPreviousWords
+}) {
     const modifyLetters = (letter, remove = false) => {
-        const newStack = new Stack();
-        newStack.items = [...props.letters.items];
+        const cloned = [...letters];
 
-        if (props.submitWord) {
-
-            if (props.letters.size() != props.length) {
+        if (submitWord) {
+            if (letters.length !== length) {
                 toast.warn("You may fill the word before submitting it.");
                 return;
             }
 
-            const emptyStack = new Stack();
-            const newMap = new Map();
-
-            props.previousWords.forEach((value, key) => {
-                newMap.set(key, value);
-            });
-
-            newMap.set(
-                props.currentWordIndex,
-                props.matches
-            );
-
-            props.setPreviousWords(newMap);
-            props.setCurrentWordIndex(props.currentWordIndex + 1);
-
-            props.setLettersData(
-                createLettersData(
-                    props.letters,
-                    props.matches
-                )
-            );
-
-            props.setLetters(emptyStack);
-            props.setCurrentLetterIndex(0);
-
-            props.setPreviousLetters(previousLettersMap);
-
-            console.warn("RESET")
-
+            const emptyArr = [];
+            const newMap = new Map(previousWords);
+            newMap.set(currentWordIndex, matches);
+            setPreviousWords(newMap);
+            setCurrentWordIndex(currentWordIndex + 1);
+            setLettersData(createLettersData(letters, matches));
+            setLetters(emptyArr);
+            setCurrentLetterIndex(0);
+            setPreviousLetters(previousLettersMap);
             return;
         }
 
         if (!remove) {
-
-            if (newStack.size() === props.length) {
+            if (cloned.length === length) {
                 toast.warn("You can't add more letters.");
                 return;
             }
 
-            newStack.push(letter);
-            props.setCurrentLetter(letter);
+            cloned.push(letter);
+            setCurrentLetter(letter);
 
-            let prevLetters = props.previousLetters;
-            let prevLettersCopy = new Map();
-            prevLetters.forEach((e, i) => prevLettersCopy.set(i, e));
-            prevLettersCopy.set(props.currentLetterIndex, letter);
-            props.setPreviousLetters(prevLettersCopy);
-
-            props.setCurrentLetterIndex(props.currentLetterIndex + 1);
-
+            const prevLettersCopy = new Map(previousLetters);
+            prevLettersCopy.set(currentLetterIndex, letter);
+            setPreviousLetters(prevLettersCopy);
+            setCurrentLetterIndex(currentLetterIndex + 1);
         } else {
-
-            let prevLettersCopy = new Map(props.previousLetters);
-            prevLettersCopy.delete(props.currentLetterIndex);
-            props.setPreviousLetters(prevLettersCopy);
-
-            newStack.pop();
-            props.setCurrentLetterIndex(props.currentLetterIndex - 1);
+            const prevLettersCopy = new Map(previousLetters);
+            prevLettersCopy.delete(currentLetterIndex);
+            setPreviousLetters(prevLettersCopy);
+            cloned.pop();
+            setCurrentLetterIndex(currentLetterIndex - 1);
         }
 
-        props.setLetters(newStack);
+        setLetters(cloned);
     };
 
     return (

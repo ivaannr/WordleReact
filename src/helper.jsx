@@ -23,15 +23,16 @@ function getWordMatches(word, letters) {
     const matches = createMatches(wordArray, letters);
 
     let index = 0;
-    for (const letter of letters.toArray()) {
-        
+
+    for (const letter of letters) {
+
         const hasLetter = Array.from(matches.values()).includes(letter);
 
         if (!hasLetter) {
             result.push(
                 createRecord(
                     letter,
-                    letters.index(letter),
+                    letters.indexOf(letter),
                     "miss"
                 )
             );
@@ -43,7 +44,7 @@ function getWordMatches(word, letters) {
             result.push(
                 createRecord(
                     letter,
-                    letters.index(letter),
+                    letters.indexOf(letter),
                     "contains"
                 )
             );
@@ -51,11 +52,11 @@ function getWordMatches(word, letters) {
             continue;
         }
 
-        if (letters.get(index) === matches.get(index)) {
+        if (letters[index] === matches.get(index)) {
             result.push(
                 createRecord(
                     letter,
-                    letters.index(letter),
+                    letters.indexOf(letter),
                     "correct"
                 )
             );
@@ -68,10 +69,11 @@ function getWordMatches(word, letters) {
 }
 
 
+
 function createMatches(word, letters) {
     const matches = new Map();
 
-    for (let i = 0; i < letters.size(); i++) {
+    for (let i = 0; i < letters.length; i++) {
         matches.set(i, word[i]);
     }
 
@@ -120,17 +122,23 @@ function createDataRecord(letter, state) {
 }
 
 function createLettersData(letters, matches) {
-    const lettersArray = letters.toArray();
+    const lettersArray = letters;
     const data = [];
 
-    for (const i in lettersArray) {
-        data.push(
-            createDataRecord(
-                matches[i].letter,
-                matches[i].state
-            )
-        );
+    try {
+        for (const i in lettersArray) {
+            data.push(
+                createDataRecord(
+                    matches[i].letter,
+                    matches[i].state
+                )
+            );
+        }
+    } catch (ex) {
+        console.log(ex)
+        console.log(matches)
     }
+
 
     return data;
 }

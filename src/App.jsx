@@ -20,9 +20,9 @@ let indexmap = new Map([
 ])
 
 let previousLettersMap = new Map([]);
-Array.from(5).forEach((_, i) => {
-  previousLettersMap.set(i, "")
-})
+Array.from({ length: 5 }).forEach((_, i) => {
+  previousLettersMap.set(i, "");
+});
 
 export default function App() {
   const [length, setLength] = useState(5);
@@ -30,7 +30,7 @@ export default function App() {
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0);
   const [currentLetter, setCurrentLetter] = useState("");
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [letters, setLetters] = useState(new Stack());
+  const [letters, setLetters] = useState([]);
   const [word, setWord] = useState("");
   const [matches, setMatches] = useState([]);
   const [language, setLanguage] = useState("es");
@@ -55,7 +55,6 @@ export default function App() {
     useEffect(() => {
     console.log("Previous Letters:", previousLetters);
   }, [previousLetters]);
-6
 
   useEffect(() => {
 
@@ -63,6 +62,7 @@ export default function App() {
 
     setMatches(getWordMatches(formattedWord, letters));
     console.log("Resultado:", matches)
+    console.log("Letters:", letters);
 
   }, [letters]);
 

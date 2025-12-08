@@ -1,25 +1,25 @@
 export default class Stack {
 
-    constructor() { this.items = []; }
+    constructor(items = []) {
+        this.items = [...items];
+    }
 
-    push(element) { this.items.push(element); }
+    push(element) {
+        return new Stack([...this.items, element]);
+    }
 
     pop() {
-        if (this.isEmpty()) {
-            return null;
-        }
-        return this.items.pop();
+        if (this.isEmpty()) return this;
+        return new Stack(this.items.slice(0, -1));
     }
 
     peek() {
-        if (this.isEmpty()) {
-            return null;
-        }
+        if (this.isEmpty()) return null;
         return this.items[this.items.length - 1];
     }
 
     clear() {
-        this.items = [];
+        return new Stack([]);
     }
 
     count() {
@@ -35,7 +35,7 @@ export default class Stack {
     }
 
     print() {
-        return this.items.join("").toString().toUpperCase() ?? "...";
+        return this.items.join("").toUpperCase() ?? "...";
     }
 
     forEach(callback) {
@@ -43,7 +43,7 @@ export default class Stack {
     }
 
     toArray() {
-        return this.items;
+        return [...this.items];
     }
 
     get(index) {
@@ -54,5 +54,7 @@ export default class Stack {
 
     size() { return this.items.length; }
 
-    log() { console.log(this.items); }
+    clone() {
+        return new Stack(this.items);
+    }
 }
