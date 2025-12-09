@@ -61,15 +61,6 @@ export default function App() {
   // }, []);
 
   useEffect(() => {
-    //console.log("Previous Words:", previousWords);
-
-  }, [previousWords]);
-
-  useEffect(() => {
-    //console.log("Previous Letters:", previousLetters);
-  }, [previousLetters]);
-
-  useEffect(() => {
 
     const formattedWord = replaceAccents(word.toUpperCase());
 
@@ -78,14 +69,15 @@ export default function App() {
     console.log("Current matches: ", ...currentMatches)
 
     setMatches(currentMatches);
-
-    console.log("Matches:", matches)
+    
     console.log("Letters:", letters);
 
   }, [letters]);
 
-
-
+  useEffect(() => {
+    console.log("Current Letter Index:", currentLetterIndex);
+    console.log("Current Letter:", currentLetter);
+  }, [currentLetterIndex]);
 
   return (
     <>
@@ -116,7 +108,6 @@ export default function App() {
         setLettersData={setLettersData}
         length={length}
         matches={matches}
-        e
         currentLetterIndex={currentLetterIndex}
         setCurrentLetterIndex={setCurrentLetterIndex}
         currentLetter={currentLetter}

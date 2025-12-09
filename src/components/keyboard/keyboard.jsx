@@ -74,6 +74,7 @@ export default function Keyboard(props) {
                         length={props.length}
                         previousLetters={props.previousLetters} 
                         setPreviousLetters={props.setPreviousLetters}
+                        currentLetterIndex={props.currentLetterIndex}
                     />
                 </div>
 

@@ -70,13 +70,21 @@ export default function ButtonCell({
             const prevLettersCopy = new Map(previousLetters);
             prevLettersCopy.set(currentLetterIndex, letter);
             setPreviousLetters(prevLettersCopy);
-            setCurrentLetterIndex(currentLetterIndex + 1);
+            setCurrentLetterIndex(currentLetterIndex => currentLetterIndex + 1);
         } else {
+
+            const canRemove = currentLetterIndex > 0;
+
+            if (!canRemove) {
+                toast.warn("You can't remove any letter.");
+                return;
+            }
+
             const prevLettersCopy = new Map(previousLetters);
             prevLettersCopy.delete(currentLetterIndex);
             setPreviousLetters(prevLettersCopy);
             cloned.pop();
-            setCurrentLetterIndex(currentLetterIndex - 1);
+            setCurrentLetterIndex(currentLetterIndex => currentLetterIndex - 1);
         }
 
         setLetters(cloned);
