@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import './cell.css'
 import { getColor } from "../../helper";
 
@@ -8,11 +7,24 @@ export default function Cell(props) {
     const isActive = letterID === currentLetterIndex;
     const assignedLetter = previousLetters?.get(letterID);
 
+    let borderColor;
+
+    if (!isActive && isWordActive) {
+        borderColor = '#444444';
+    } else {
+        borderColor = '#90caf9';
+    }
+
     if (!isActive && isWordActive) {
         return (
             <div
                 className="cell"
-                style={{ backgroundColor: color }}
+                style={{
+                    backgroundColor: color,
+                    border: `1px solid ${borderColor}`,
+                    borderRadius: `5px`
+                    
+                }}
             >
                 <h1>
                     {assignedLetter ?? ""}
@@ -23,7 +35,11 @@ export default function Cell(props) {
         return (
             <div
                 className="cell"
-                style={{ backgroundColor: color }}
+                style={{
+                    backgroundColor: color,
+                    border: `1px solid ${borderColor}`,
+                    borderRadius: `5px`
+                }}
             >
                 <h1>
                     {letter}

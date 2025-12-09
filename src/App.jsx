@@ -118,7 +118,7 @@ export default function App() {
         currentWordIndex={currentWordIndex}
         setCurrentWordIndex={setCurrentWordIndex}
         setLettersData={setLettersData}
-        length={length}
+        length={length}h
         matches={matches}
         currentLetterIndex={currentLetterIndex}
         setCurrentLetterIndex={setCurrentLetterIndex}
@@ -128,9 +128,10 @@ export default function App() {
         setPreviousWords={setPreviousWords}
         previousLetters={previousLetters}
         setPreviousLetters={setPreviousLetters}
+        isActive={false}
       />
 
-      <Footer />
+      {/*<Footer />*/}
 
       <ToastContainer
         position="top-right"
