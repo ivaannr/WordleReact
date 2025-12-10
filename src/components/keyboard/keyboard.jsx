@@ -18,7 +18,9 @@ const Keyboard = ({
         setLettersData,
         matches,
         previousWords,
-        setPreviousWords
+        setPreviousWords,
+        word,
+        openWinModal
     }) => {
 
     const rows = [
@@ -97,6 +99,8 @@ const Keyboard = ({
                             matches={matches}
                             submitWord={true}
                             {...commonProps}
+                            word={word}
+                            openWinModal={openWinModal}
                         />
                         <ButtonCell
                             letter="⬅"

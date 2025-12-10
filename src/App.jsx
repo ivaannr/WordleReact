@@ -1,14 +1,14 @@
 import './App.css'
+import './WinModal.css'
 import "react-toastify/dist/ReactToastify.css"
 import { useState, useEffect } from 'react'
 import { fetchWord, getWordMatches, replaceAccents } from './helper'
 import { ToastContainer } from 'react-toastify'
-import Stack from './Stack'
 import Header from './components/header/header'
-import Footer from './components/footer/footer'
 import MainContainer from './components/main-container/main-container'
 import Keyboard from './components/keyboard/keyboard'
-import Settings from './settings/settings'
+import Modal from "react-modal";
+
 
 let indexmap = new Map([
   [0, { state: "empty", letter: "" }],
@@ -36,21 +36,21 @@ export default function App() {
   const [language, setLanguage] = useState("es");
   const [previousWords, setPreviousWords] = useState(indexmap);
   const [previousLetters, setPreviousLetters] = useState(previousLettersMap);
+  const [isWinModalOpen, setWinModalOpen] = useState(false);
 
-  // Dejar comentado para no saturar la API con peticiones
-  // useEffect(() => {
-  //   const fetchWordAsync = async () => {
-  //     const w = await fetchWord(language);
-  //     setWord(w);
-  //   };
-
-  //   fetchWordAsync();
-  // }, []);
-
+  const openWinModal = () => setWinModalOpen(true);
+  const closeWinModal = () => setWinModalOpen(false);
 
   useEffect(() => {
-      //setLettersData([]);
-  }, [currentWordIndex]);
+    // const fetchWordAsync = async () => {
+    //   const w = await fetchWord(language);
+    //   setWord(w);
+    // };
+
+    // fetchWordAsync();
+
+    setWord("Pipas");
+  }, []);
 
   useEffect(() => {
 
@@ -59,15 +59,9 @@ export default function App() {
     const currentMatches = getWordMatches(formattedWord, letters);
 
     setMatches(currentMatches);
-    
-    // console.log("Letters:", letters);
 
   }, [letters]);
 
-  useEffect(() => {
-    // console.log("Current Letter Index:", currentLetterIndex);
-    // console.log("Current Letter:", currentLetter);
-  }, [currentLetterIndex]);
 
   return (
     <>
@@ -107,7 +101,53 @@ export default function App() {
         previousLetters={previousLetters}
         setPreviousLetters={setPreviousLetters}
         isActive={false}
+        word={word}
+        openWinModal={openWinModal}
       />
+
+      <Modal
+        isOpen={isWinModalOpen}
+        onRequestClose={closeWinModal}
+        closeTimeoutMS={50}
+        style={{
+          content: {
+            width: "600px",
+            height: "300px",
+            margin: "auto",
+            display: "flex",
+            justifyContent: "center",
+            borderRadius: "10px",
+            borderColor: "#444444",
+            inset: "50% auto auto 50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "#1b1b1b"
+          },
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          }
+        }}
+      >
+        <div>
+          <button 
+          className="close" 
+          onClick={() => closeWinModal()}
+          >
+            <img src='src\assets\CLOSE_ICON.png'></img>
+          </button>
+
+          <div className="modal">
+            <h1 className="marginPlus">Wordle</h1>
+            <h2>You won!</h2>
+            <h3>The word was: {word}</h3>
+            <button 
+            className='replay'
+            onClick={() => { window.location.reload(); }}
+            >
+              Replay
+            </button>
+          </div>
+        </div>
+      </Modal>
 
       <ToastContainer
         position="top-right"

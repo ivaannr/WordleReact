@@ -1,0 +1,54 @@
+.modal {
+    background-color: var(--secondary-dark-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 3px;
+    transition: 0.25s ease;
+}
+
+.close:hover {
+    transform: scale(1.15);
+    transition: 0.25s ease;
+}
+
+.modal h1 {
+    color: #d6d6d6;
+}
+.modal h2,
+.modal h3 {
+    color: #d6d6d6;
+    margin: 15px;
+}
+
+.replay {
+    background-color: #3fbf00;
+    width: 10vw;
+    height: 5vh;
+    color: #d6d6d6;
+    border: 1px solid #bdbdbd;
+    border-radius: 15px;
+    font-weight: bolder;
+    font-size: medium;
+    transition: 0.5s ease;
+    
+}
+
+.replay:hover {
+    transform: scale(1.05);
+    transition: 0.5s ease;
+    background-color: #36a300;
+}

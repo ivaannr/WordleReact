@@ -1,8 +1,9 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import Cell from "../letter-cell/cell";
 import './CellButton.css'
 import { toast } from "react-toastify";
 import { createLettersData } from "../../helper";
+
 
 
 let previousLettersMap = new Map([]);
@@ -28,7 +29,9 @@ export default function ButtonCell({
     setCurrentWordIndex,
     setLettersData,
     previousWords,
-    setPreviousWords
+    setPreviousWords,
+    word,
+    openWinModal
 }) {
     const buttonRef = useRef();
 
@@ -70,6 +73,12 @@ export default function ButtonCell({
             setCurrentLetterIndex(0);
             setPreviousLetters(previousLettersMap);
             setLettersData([]);
+
+            if (word.toUpperCase() === letters.join("".toUpperCase())) {
+                openWinModal();
+                console.log("WIN");
+            }
+
             return;
         }
 
