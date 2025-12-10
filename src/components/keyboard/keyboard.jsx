@@ -2,9 +2,7 @@ import React from "react";
 import './Keyboard.css'
 import ButtonCell from "../cell-button/CellButton";
 
-/*TODO => REFACTORIZAR ESTO DIOS SANTO*/
-
-export const Keyboard = ({
+const Keyboard = ({
         isActive,
         letters,
         setLetters,
@@ -110,8 +108,6 @@ export const Keyboard = ({
             </div>
         );
     }
-
-
 };
 
 export default Keyboard

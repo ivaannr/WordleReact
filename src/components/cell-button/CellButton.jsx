@@ -69,6 +69,7 @@ export default function ButtonCell({
             setLetters(emptyArr);
             setCurrentLetterIndex(0);
             setPreviousLetters(previousLettersMap);
+            setLettersData([]);
             return;
         }
 

@@ -47,30 +47,10 @@ export default function App() {
   //   fetchWordAsync();
   // }, []);
 
-  // useEffect(() => {
-    
 
-  //   console.log("Matches changed!", matches);
-  //   const formattedWord = replaceAccents(word.toUpperCase());
-  //   const currentMatches = getWordMatches(formattedWord, letters);
-
-  //   console.log("Current matches: ", ...currentMatches)
-
-  //   setMatches(currentMatches);
-
-  // }, []);
-
-  // useEffect(() => {
-  //   const handleKeyDown = (event) => {
-  //     console.log(event.key);
-  //   };
-
-  //   window.addEventListener("keydown", handleKeyDown);
-
-  //   return () => {
-  //     window.removeEventListener("keydown", handleKeyDown);
-  //   };
-  // }, []);
+  useEffect(() => {
+      //setLettersData([]);
+  }, [currentWordIndex]);
 
   useEffect(() => {
 
@@ -78,17 +58,15 @@ export default function App() {
 
     const currentMatches = getWordMatches(formattedWord, letters);
 
-    console.log("Current matches: ", ...currentMatches)
-
     setMatches(currentMatches);
     
-    console.log("Letters:", letters);
+    // console.log("Letters:", letters);
 
   }, [letters]);
 
   useEffect(() => {
-    console.log("Current Letter Index:", currentLetterIndex);
-    console.log("Current Letter:", currentLetter);
+    // console.log("Current Letter Index:", currentLetterIndex);
+    // console.log("Current Letter:", currentLetter);
   }, [currentLetterIndex]);
 
   return (
@@ -118,7 +96,7 @@ export default function App() {
         currentWordIndex={currentWordIndex}
         setCurrentWordIndex={setCurrentWordIndex}
         setLettersData={setLettersData}
-        length={length}h
+        length={length}
         matches={matches}
         currentLetterIndex={currentLetterIndex}
         setCurrentLetterIndex={setCurrentLetterIndex}
@@ -130,8 +108,6 @@ export default function App() {
         setPreviousLetters={setPreviousLetters}
         isActive={false}
       />
-
-      {/*<Footer />*/}
 
       <ToastContainer
         position="top-right"
