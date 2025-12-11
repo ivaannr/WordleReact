@@ -21,6 +21,7 @@ function getWordMatches(word, letters) {
     const wordArray = word.split("");
     const result = [];
     const matches = createMatches(wordArray, letters);
+    const seenLetters = new Set();
 
     let index = 0;
 
@@ -40,24 +41,37 @@ function getWordMatches(word, letters) {
             continue;
         }
 
-        if (hasLetter) {
-            result.push(
-                createRecord(
-                    letter,
-                    letters.indexOf(letter),
-                    "contains"
-                )
-            );
-            index++;
-            continue;
-        }
+        seenLetters.add(letter);
 
-        if (letters[index] === matches.get(index)) {
+        if (hasLetter) {
+
+            if (letters[index] === matches.get(index)) {
+                result.push(
+                    createRecord(
+                        letter,
+                        letters.indexOf(letter),
+                        "correct"
+                    )
+                );
+                index++;
+                continue;
+            }
+
+            if (getLetterCount(letter, letters) > 1 && seenLetters.has(letter)) {
+                result.push(
+                    createRecord(
+                        letter,
+                        letters.indexOf(letter),
+                        "contains"
+                    )
+                );
+            }
+
             result.push(
                 createRecord(
                     letter,
                     letters.indexOf(letter),
-                    "correct"
+                    "miss"
                 )
             );
             index++;

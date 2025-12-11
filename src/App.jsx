@@ -43,28 +43,30 @@ export default function App() {
   const [difficulty, setDifficulty] = useState("Medium");
   const [wordCount, setWordCount] = useState(6);
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
+  const [isLoseModalOpen, setLoseModalOpen] = useState(false);
 
   const openWinModal = () => setWinModalOpen(true);
   const closeWinModal = () => setWinModalOpen(false);
+
+  const openLoseModal = () => setLoseModalOpen(true);
+  const closeLoseModal = () => setLoseModalOpen(false);
 
   const openSettingsModal = () => setSettingsModalOpen(true);
   const closeSettingsModal = () => setSettingsModalOpen(false);
 
 
   useEffect(() => {
-    // const fetchWordAsync = async () => {
-    //   const w = await fetchWord(language);
-    //   setWord(w);
-    // };
+    const fetchWordAsync = async () => {
+      const w = await fetchWord(language);
+      setWord(w);
+    };
 
-    // fetchWordAsync();
-
-    setWord("Pipas");
+    fetchWordAsync();
   }, []);
 
   useEffect(() => {
-    setIsPopUpOpen(isSettingsModalOpen || isWinModalOpen);
-    
+    setIsPopUpOpen(isSettingsModalOpen || isWinModalOpen || isLoseModalOpen);
+
   }, [isSettingsModalOpen, isWinModalOpen]);
 
   useEffect(() => {
@@ -148,6 +150,7 @@ export default function App() {
         word={word}
         openWinModal={openWinModal}
         isPopUpOpen={isPopUpOpen}
+        openLoseModal={openLoseModal}
       />
 
       <Modal
@@ -196,6 +199,51 @@ export default function App() {
       </Modal>
 
       <Modal
+        isOpen={isLoseModalOpen}
+        onRequestClose={closeLoseModal}
+        closeTimeoutMS={50}
+        ariaHideApp={false}
+        style={{
+          content: {
+            width: "600px",
+            height: "300px",
+            margin: "auto",
+            display: "flex",
+            justifyContent: "center",
+            borderRadius: "10px",
+            borderColor: "#444444",
+            inset: "50% auto auto 50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "#1b1b1b"
+          },
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          }
+        }}
+      >
+        <div>
+          <button
+            className="close"
+            onClick={() => closeLoseModal()}
+          >
+            <img src='src\assets\CLOSE_ICON.png'></img>
+          </button>
+
+          <div className="modal">
+            <h1 className="marginPlus">Wordle</h1>
+            <h2>You lost!</h2>
+            <h3>The word was: {word}</h3>
+            <button
+              className='replayLose'
+              onClick={() => { window.location.reload(); }}
+            >
+              Replay
+            </button>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
         isOpen={isSettingsModalOpen}
         onRequestClose={closeSettingsModal}
         closeTimeoutMS={50}
@@ -203,7 +251,7 @@ export default function App() {
         style={{
           content: {
             width: "600px",
-            height: "300px",
+            height: "250px",
             display: "flex",
             justifyContent: "center",
             borderRadius: "10px",

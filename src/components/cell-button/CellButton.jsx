@@ -12,28 +12,29 @@ Array.from({ length: 5 }).forEach((_, i) => {
 })
 
 export default function ButtonCell({
-    letter,
-    remove = false,
-    letters,
-    setLetters,
-    length,
-    currentLetterIndex,
-    setCurrentLetterIndex,
-    currentLetter,
-    setCurrentLetter,
-    previousLetters,
-    setPreviousLetters,
-    submitWord,
-    matches,
-    currentWordIndex,
-    setCurrentWordIndex,
-    setLettersData,
-    previousWords,
-    setPreviousWords,
-    word,
-    openWinModal,
-    isPopUpOpen
-}) {
+        letter,
+        remove = false,
+        letters,
+        setLetters,
+        length,
+        currentLetterIndex,
+        setCurrentLetterIndex,
+        currentLetter,
+        setCurrentLetter,
+        previousLetters,
+        setPreviousLetters,
+        submitWord,
+        matches,
+        currentWordIndex,
+        setCurrentWordIndex,
+        setLettersData,
+        previousWords,
+        setPreviousWords,
+        word,
+        openWinModal,
+        isPopUpOpen,
+        openLoseModal
+    }) {
     const buttonRef = useRef();
 
     useEffect(() => {
@@ -78,6 +79,13 @@ export default function ButtonCell({
             if (word.toUpperCase() === letters.join("".toUpperCase())) {
                 openWinModal();
                 console.log("WIN");
+                return;
+            }
+
+            if (currentWordIndex === length) {
+                openLoseModal();
+                console.log("LOSS");
+                return;
             }
 
             return;

@@ -21,7 +21,8 @@ const Keyboard = ({
         setPreviousWords,
         word,
         openWinModal,
-        isPopUpOpen
+        isPopUpOpen,
+        openLoseModal
     }) => {
 
     const rows = [
@@ -103,6 +104,7 @@ const Keyboard = ({
                             {...commonProps}
                             word={word}
                             openWinModal={openWinModal}
+                            openLoseModal={openLoseModal}
                         />
                         <ButtonCell
                             letter="⬅"
