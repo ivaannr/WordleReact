@@ -1,6 +1,6 @@
 import './dropdown.css'
 
-const Dropdown = ({ options, id, name, setValue, text }) => {
+const Dropdown = ({ options, id, name, setValue, value, text }) => {
 
     const handleChange = (e) => {
         setValue(e.target.value);
@@ -9,7 +9,7 @@ const Dropdown = ({ options, id, name, setValue, text }) => {
     return (
         <>
             <label htmlFor={name}>{text}</label>
-            <select id={id} name={name} value={options[0]} onChange={handleChange}>
+            <select id={id} name={name} value={value} onChange={handleChange}>
                 {
                     options.map((o, index) => (
                         <option key={index} value={o}>{o}</option>

@@ -126,6 +126,7 @@ export default function App() {
         isOpen={isWinModalOpen}
         onRequestClose={closeWinModal}
         closeTimeoutMS={50}
+        ariaHideApp={false}
         style={{
           content: {
             width: "600px",
@@ -202,6 +203,7 @@ export default function App() {
                   setValue={setDifficulty}
                   name={"Difficulty"}
                   text={"Select the difficulty"}
+                  value={difficulty}
                 />
               </div>
               <div className='row'>
