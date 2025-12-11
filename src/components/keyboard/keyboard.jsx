@@ -20,7 +20,8 @@ const Keyboard = ({
         previousWords,
         setPreviousWords,
         word,
-        openWinModal
+        openWinModal,
+        isPopUpOpen
     }) => {
 
     const rows = [
@@ -42,7 +43,8 @@ const Keyboard = ({
         previousLetters,
         setPreviousLetters,
         previousWords,
-        setPreviousWords
+        setPreviousWords,
+        isPopUpOpen
     };
 
     const renderRow = (lettersRow) => (

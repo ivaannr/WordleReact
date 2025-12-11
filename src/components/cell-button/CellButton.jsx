@@ -31,7 +31,8 @@ export default function ButtonCell({
     previousWords,
     setPreviousWords,
     word,
-    openWinModal
+    openWinModal,
+    isPopUpOpen
 }) {
     const buttonRef = useRef();
 
@@ -45,14 +46,14 @@ export default function ButtonCell({
                 case "BACKSPACE": key = "⬅"; break;
             };
 
-            if (key === letter.toUpperCase()) {
+            if (key === letter.toUpperCase() && !isPopUpOpen) {
                 buttonRef.current.click();
             }
         };
 
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [letter]);
+    }, [letter, isPopUpOpen]);
 
     const modifyLetters = (letter, remove = false) => {
         const cloned = [...letters];

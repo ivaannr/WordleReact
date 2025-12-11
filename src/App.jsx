@@ -10,7 +10,7 @@ import MainContainer from './components/main-container/main-container'
 import Keyboard from './components/keyboard/keyboard'
 import Modal from "react-modal";
 import Dropdown from './components/dropdown/dropdown'
-
+import { LengthTextfield } from './components/textfield/textfield'
 
 let indexmap = new Map([
   [0, { state: "empty", letter: "" }],
@@ -40,7 +40,9 @@ export default function App() {
   const [previousLetters, setPreviousLetters] = useState(previousLettersMap);
   const [isWinModalOpen, setWinModalOpen] = useState(false);
   const [isSettingsModalOpen, setSettingsModalOpen] = useState(false);
-  const [difficulty, setDifficulty] = useState("Easy");
+  const [difficulty, setDifficulty] = useState("Medium");
+  const [wordCount, setWordCount] = useState(6);
+  const [isPopUpOpen, setIsPopUpOpen] = useState(false);
 
   const openWinModal = () => setWinModalOpen(true);
   const closeWinModal = () => setWinModalOpen(false);
@@ -60,10 +62,34 @@ export default function App() {
     setWord("Pipas");
   }, []);
 
-  // TODO
+  useEffect(() => {
+    setIsPopUpOpen(isSettingsModalOpen || isWinModalOpen);
+    
+  }, [isSettingsModalOpen, isWinModalOpen]);
+
   useEffect(() => {
 
-    console.log("Dificulty changed to:", difficulty);
+    switch (language) {
+      case "Spanish": setLanguage("es"); break;
+      case "English": setLanguage("en"); break;
+      case "German": setLanguage("de"); break;
+      case "French": setLanguage("fr"); break;
+      case "Portuguese": setLanguage("pt-br"); break;
+      case "Italian": setLanguage("it"); break;
+      default: setLanguage("es"); break;
+    }
+
+  }, [language]);
+
+  useEffect(() => {
+    switch (difficulty) {
+      case "Easy": setWordCount(8); break;
+      case "Medium": setWordCount(6); break;
+      case "Hard": setWordCount(4); break;
+      case "Extreme": setWordCount(2); break;
+      case "Hardcore": setWordCount(1); break;
+      default: setWordCount(6); break;
+    }
 
   }, [difficulty]);
 
@@ -99,6 +125,7 @@ export default function App() {
         setPreviousWords={setPreviousWords}
         previousLetters={previousLetters}
         setPreviousLetters={setPreviousLetters}
+        wordCount={wordCount}
       />
 
       <Keyboard
@@ -120,6 +147,7 @@ export default function App() {
         isActive={false}
         word={word}
         openWinModal={openWinModal}
+        isPopUpOpen={isPopUpOpen}
       />
 
       <Modal
@@ -198,7 +226,7 @@ export default function App() {
             <div className='settings'>
               <div className='row'>
                 <Dropdown
-                  options={["Easy", "Medium", "Hard"]}
+                  options={["Easy", "Medium", "Hard", "Extreme", "Hardcore"]}
                   id={"Difficulty"}
                   setValue={setDifficulty}
                   name={"Difficulty"}
@@ -207,10 +235,24 @@ export default function App() {
                 />
               </div>
               <div className='row'>
+                <Dropdown
+                  options={["Spanish", "English", "German", "Italian", "French", "Portuguese"]}
+                  id={"Language"}
+                  setValue={setLanguage}
+                  name={"Language"}
+                  text={"Select the language"}
+                  value={language}
+                />
               </div>
               <div className='row'>
-                <h2>Other...</h2>
-
+                <LengthTextfield
+                  id={"Length"}
+                  setValue={setLength}
+                  name={"Length"}
+                  text={"Set the word's length"}
+                  value={length}
+                  placeholder={"Introduce the word's length (3 to 9)"}
+                />
               </div>
             </div>
           </div>

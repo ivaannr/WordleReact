@@ -1,11 +1,11 @@
 import './main-container.css'
 import Word from '../word/word';
 
-export default function MainContainer( { currentWordIndex, currentLetterIndex, length, lettersData, previousWords, currentLetter, previousLetters, setPreviousLetters } ) {
+export default function MainContainer( { currentWordIndex, currentLetterIndex, length, lettersData, previousWords, currentLetter, previousLetters, setPreviousLetters, wordCount } ) {
   
   return (
     <div className="box">
-      {Array.from({ length: 6 }).map((_, index) => {
+      {Array.from({ length: wordCount }).map((_, index) => {
         return (
           <Word
             key={index}
