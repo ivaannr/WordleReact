@@ -1,5 +1,6 @@
 import './App.css'
 import './WinModal.css'
+import './SettingsModal.css'
 import "react-toastify/dist/ReactToastify.css"
 import { useState, useEffect } from 'react'
 import { fetchWord, getWordMatches, replaceAccents } from './helper'
@@ -8,6 +9,7 @@ import Header from './components/header/header'
 import MainContainer from './components/main-container/main-container'
 import Keyboard from './components/keyboard/keyboard'
 import Modal from "react-modal";
+import Dropdown from './components/dropdown/dropdown'
 
 
 let indexmap = new Map([
@@ -38,6 +40,7 @@ export default function App() {
   const [previousLetters, setPreviousLetters] = useState(previousLettersMap);
   const [isWinModalOpen, setWinModalOpen] = useState(false);
   const [isSettingsModalOpen, setSettingsModalOpen] = useState(false);
+  const [difficulty, setDifficulty] = useState("Easy");
 
   const openWinModal = () => setWinModalOpen(true);
   const closeWinModal = () => setWinModalOpen(false);
@@ -57,6 +60,13 @@ export default function App() {
     setWord("Pipas");
   }, []);
 
+  // TODO
+  useEffect(() => {
+
+    console.log("Dificulty changed to:", difficulty);
+
+  }, [difficulty]);
+
   useEffect(() => {
 
     const formattedWord = replaceAccents(word.toUpperCase());
@@ -70,7 +80,9 @@ export default function App() {
 
   return (
     <>
-      <Header />
+      <Header
+        openSettingsModal={openSettingsModal}
+      />
 
       <MainContainer
         letters={letters}
@@ -133,9 +145,9 @@ export default function App() {
         }}
       >
         <div>
-          <button 
-          className="close" 
-          onClick={() => closeWinModal()}
+          <button
+            className="close"
+            onClick={() => closeWinModal()}
           >
             <img src='src\assets\CLOSE_ICON.png'></img>
           </button>
@@ -144,9 +156,9 @@ export default function App() {
             <h1 className="marginPlus">Wordle</h1>
             <h2>You won!</h2>
             <h3>The word was: {word}</h3>
-            <button 
-            className='replay'
-            onClick={() => { window.location.reload(); }}
+            <button
+              className='replay'
+              onClick={() => { window.location.reload(); }}
             >
               Replay
             </button>
@@ -155,14 +167,14 @@ export default function App() {
       </Modal>
 
       <Modal
-        isOpen={isWinModalOpen}
+        isOpen={isSettingsModalOpen}
         onRequestClose={closeSettingsModal}
         closeTimeoutMS={50}
+        ariaHideApp={false}
         style={{
           content: {
             width: "600px",
             height: "300px",
-            margin: "auto",
             display: "flex",
             justifyContent: "center",
             borderRadius: "10px",
@@ -176,9 +188,32 @@ export default function App() {
           }
         }}
       >
-      
-      
-      
+
+        <div className="container">
+          <div className="top">
+            <h2>Settings</h2>
+          </div>
+          <div className="mid">
+            <div className='settings'>
+              <div className='row'>
+                <Dropdown
+                  options={["Easy", "Medium", "Hard"]}
+                  id={"Difficulty"}
+                  setValue={setDifficulty}
+                  name={"Difficulty"}
+                  text={"Select the difficulty"}
+                />
+              </div>
+              <div className='row'>
+              </div>
+              <div className='row'>
+                <h2>Other...</h2>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
       </Modal>
 
       <ToastContainer

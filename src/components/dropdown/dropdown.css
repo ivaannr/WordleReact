@@ -1,0 +1,39 @@
+label {
+    padding-top: 2%;
+    padding-bottom: 2%;
+    padding-right: 5%;
+    color: #d6d6d6;
+    font-weight: bolder;
+    font-size: x-large;
+}
+
+select {
+    background-color: rgba(10, 10, 10, 0.3);
+    color: #d6d6d6;
+    padding: 15px;
+    border-radius: 8px;
+    border: 0px solid var(--secondary-dark-color);
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    cursor: pointer;
+    width: 30%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+select:hover {
+    background-color: rgba(10, 10, 10, 0.5) !important;
+}
+
+option {
+    background-color: var(--secondary-dark-color);
+    color: #d6d6d6;
+    padding: 20px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+option:hover {
+    background-color: var(--primary-dark-color);
+}
