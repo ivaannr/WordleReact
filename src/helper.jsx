@@ -17,65 +17,40 @@ async function fetchWord(lang) {
     return json[0];
 }
 
+/**
+ * @param {String} word Word to guess
+ * @param {Array<String>} letters Submitted letres
+ * @returns {Array<Object>} An array of objects that contains info for each letter
+ */
 function getWordMatches(word, letters) {
     const wordArray = word.split("");
     const result = [];
-    const matches = createMatches(wordArray, letters);
-    const seenLetters = new Set();
 
-    let index = 0;
+    const letterCount = {};
 
-    for (const letter of letters) {
+    for (const char of wordArray) {
+        letterCount[char] = (letterCount[char] ?? 0) + 1;
+    }
 
-        const hasLetter = Array.from(matches.values()).includes(letter);
+    for (let i = 0; i < letters.length; i++) {
+        const letter = letters[i];
 
-        if (!hasLetter) {
-            result.push(
-                createRecord(
-                    letter,
-                    letters.indexOf(letter),
-                    "miss"
-                )
-            );
-            index++;
-            continue;
+        if (letter === wordArray[i]) {
+            result[i] = createRecord(letter, i, "correct");
+            letterCount[letter]--;
         }
+    }
 
-        seenLetters.add(letter);
+    for (let i = 0; i < letters.length; i++) {
+        if (result[i]) { continue; }
 
-        if (hasLetter) {
+        const letter = letters[i];
 
-            if (letters[index] === matches.get(index)) {
-                result.push(
-                    createRecord(
-                        letter,
-                        letters.indexOf(letter),
-                        "correct"
-                    )
-                );
-                index++;
-                continue;
-            }
-
-            if (getLetterCount(letter, letters) > 1 && seenLetters.has(letter)) {
-                result.push(
-                    createRecord(
-                        letter,
-                        letters.indexOf(letter),
-                        "contains"
-                    )
-                );
-            }
-
-            result.push(
-                createRecord(
-                    letter,
-                    letters.indexOf(letter),
-                    "miss"
-                )
-            );
-            index++;
-            continue;
+        if (letterCount[letter] > 0) {
+            result[i] = createRecord(letter, i, "contains");
+            letterCount[letter]--;
+        } else {
+            result[i] = createRecord(letter, i, "miss");
         }
     }
 
