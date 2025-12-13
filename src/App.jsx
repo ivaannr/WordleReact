@@ -11,6 +11,7 @@ import Keyboard from './components/keyboard/keyboard'
 import Modal from "react-modal";
 import Dropdown from './components/dropdown/dropdown'
 import { LengthTextfield } from './components/textfield/textfield'
+import OppPanel from './components/multiplayer/opponentPanel'
 
 let indexmap = new Map([
   [0, { state: "empty", letter: "" }],
@@ -44,6 +45,11 @@ export default function App() {
   const [wordCount, setWordCount] = useState(6);
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
   const [isLoseModalOpen, setLoseModalOpen] = useState(false);
+  const [opponentData, setOpponentData] = useState({});
+  const [opponentWordIndex, setOpponentWordIndex] = useState(0);
+  const [previousOpponentWords, setPreviousOpponentWords] = useState([]);
+  const [isMultiplayer, setIsMultiplayer] = useState(true);
+
   const socket = new WebSocket("ws://localhost:8080/ws");
 
   const openWinModal = () => setWinModalOpen(true);
@@ -62,19 +68,19 @@ export default function App() {
   socket.onmessage = (event) => {
     const data = JSON.parse(event.data);
 
-    if (data?.letters) {
-      const lettersArray = data.letters.map(item => item.letter);
-      console.log("Data received:", lettersArray);
-      setLetters(lettersArray);
+    if (data) {
+      console.log("Data received:", data);
+      const copy = [...previousOpponentWords];
+      copy.add(data);
+      setPreviousOpponentWords(copy);
+      setOpponentWordIndex(opponentWordIndex => opponentWordIndex + 1);
+      setOpponentData(data);
     }
-    
-
   };
 
   socket.onclose = () => {
     console.log("Conexion closed");
   };
-
 
   useEffect(() => {
     const fetchWordAsync = async () => {
@@ -82,19 +88,7 @@ export default function App() {
       setWord(w);
     };
 
-    //fetchWordAsync();
-
-    const w = {
-      letters: [
-        { letter: "A", index: 0, state: "correct" },
-        { letter: "B", index: 1, state: "correct" },
-        { letter: "C", index: 2, state: "correct" },
-        { letter: "D", index: 3, state: "correct" },
-        { letter: "A", index: 4, state: "correct" }
-      ]
-    }
-
-    sendInfo(socket, w);
+    fetchWordAsync();
   }, []);
 
   useEffect(() => {
@@ -144,6 +138,16 @@ export default function App() {
       <Header
         openSettingsModal={openSettingsModal}
       />
+
+      <OppPanel 
+        data={opponentData}
+        length={length}
+        wordCount={wordCount}
+        opponentWordIndex={opponentWordIndex}
+        previousOpponentWords={previousOpponentWords}
+        disabled={isMultiplayer}
+      />
+      
 
       <MainContainer
         letters={letters}
