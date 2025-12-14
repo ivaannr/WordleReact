@@ -84,7 +84,7 @@ export default function App() {
 
   useEffect(() => {
     const fetchWordAsync = async () => {
-      const w = await fetchWord(language);
+      const w = await fetchWord(language, length);
       setWord(w);
     };
 
@@ -132,7 +132,6 @@ export default function App() {
 
   }, [letters]);
 
-
   return (
     <>
       <Header
@@ -146,8 +145,7 @@ export default function App() {
         opponentWordIndex={opponentWordIndex}
         previousOpponentWords={previousOpponentWords}
         disabled={isMultiplayer}
-      />
-      
+      />   
 
       <MainContainer
         letters={letters}
