@@ -1,9 +1,9 @@
 import '../main-container/main-container.css'
 import OppWord from './opponentWord';
 
-export default function OppPanel({ data, length, wordCount, opponentWordIndex, previousOpponentWords, disabled }) {
+export default function OppPanel({ data, length, wordCount, opponentWordIndex, previousOpponentWords, enabled }) {
 
-  if (disabled) {
+  if (!enabled) {
     return (
       <div style={{ display: "none" }}>
         <div className="box">

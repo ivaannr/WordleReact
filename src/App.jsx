@@ -2,7 +2,7 @@ import './App.css'
 import './WinModal.css'
 import './SettingsModal.css'
 import "react-toastify/dist/ReactToastify.css"
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { fetchWord, getWordMatches, replaceAccents, sendInfo } from './helper'
 import { ToastContainer } from 'react-toastify'
 import Header from './components/header/header'
@@ -48,9 +48,65 @@ export default function App() {
   const [opponentData, setOpponentData] = useState({});
   const [opponentWordIndex, setOpponentWordIndex] = useState(0);
   const [previousOpponentWords, setPreviousOpponentWords] = useState([]);
-  const [isMultiplayer, setIsMultiplayer] = useState(true);
+  const [isMultiplayer, setIsMultiplayer] = useState(false);
 
-  const socket = new WebSocket("ws://localhost:8080/ws");
+  const socket = useRef(null);
+
+  const fetchWordAsync = async () => {
+    const w = await fetchWord(language, length);
+    setWord(w);
+  };
+
+  const resetGame = () => {
+    setLettersData([]);
+    setCurrentLetterIndex(0);
+    setCurrentLetter("");
+    setCurrentWordIndex(0);
+    setLetters([]);
+    setMatches([]);
+    setPreviousWords(new Map(indexmap));
+    setPreviousLetters(new Map(previousLettersMap));
+    closeAllModals();
+    fetchWordAsync();
+  };
+
+  useEffect(() => {
+
+    if (!isMultiplayer) {
+      if (socket.current) {
+        socket.current.close();
+        socket.current = null;
+      }
+      
+      return;
+    }
+
+    if (socket.current) { return; }
+
+    socket.current = new WebSocket("ws://localhost:8080/ws");
+
+    socket.current.onopen = () => {
+      console.log("Successfully connected to the server");
+    };
+
+    socket.current.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+
+      if (data) {
+        const data = JSON.parse(event.data);
+        console.log("Data received:", data);
+
+        setPreviousOpponentWords(prev => [...prev, data]);
+        setOpponentWordIndex(prev => prev + 1);
+        setOpponentData(data);
+      }
+    };
+
+    socket.current.onclose = () => {
+      console.log("Conection closed");
+    };
+
+  }, [isMultiplayer]);
 
   const openWinModal = () => setWinModalOpen(true);
   const closeWinModal = () => setWinModalOpen(false);
@@ -61,33 +117,18 @@ export default function App() {
   const openSettingsModal = () => setSettingsModalOpen(true);
   const closeSettingsModal = () => setSettingsModalOpen(false);
 
-  socket.onopen = () => {
-    console.log("Successfully connected to the server");
+  const enableMultiplayer = () => setIsMultiplayer(true);
+  const disableMultiplayer = () => setIsMultiplayer(false);
+
+  const closeAllModals = () => {
+    closeWinModal();
+    closeLoseModal();
+    closeSettingsModal();
   };
 
-  socket.onmessage = (event) => {
-    const data = JSON.parse(event.data);
 
-    if (data) {
-      console.log("Data received:", data);
-      const copy = [...previousOpponentWords];
-      copy.add(data);
-      setPreviousOpponentWords(copy);
-      setOpponentWordIndex(opponentWordIndex => opponentWordIndex + 1);
-      setOpponentData(data);
-    }
-  };
-
-  socket.onclose = () => {
-    console.log("Conexion closed");
-  };
 
   useEffect(() => {
-    const fetchWordAsync = async () => {
-      const w = await fetchWord(language, length);
-      setWord(w);
-    };
-
     fetchWordAsync();
   }, []);
 
@@ -136,16 +177,17 @@ export default function App() {
     <>
       <Header
         openSettingsModal={openSettingsModal}
+        enableMultiplayer={enableMultiplayer}
       />
 
-      <OppPanel 
+      <OppPanel
         data={opponentData}
         length={length}
         wordCount={wordCount}
         opponentWordIndex={opponentWordIndex}
         previousOpponentWords={previousOpponentWords}
-        disabled={isMultiplayer}
-      />   
+        enabled={isMultiplayer}
+      />
 
       <MainContainer
         letters={letters}
@@ -225,7 +267,7 @@ export default function App() {
             <h3>The word was: {word}</h3>
             <button
               className='replay'
-              onClick={() => { window.location.reload(); }}
+              onClick={() => { resetGame(); }}
             >
               Replay
             </button>
@@ -270,7 +312,7 @@ export default function App() {
             <h3>The word was: {word}</h3>
             <button
               className='replayLose'
-              onClick={() => { window.location.reload(); }}
+              onClick={() => { resetGame(); }}
             >
               Replay
             </button>
