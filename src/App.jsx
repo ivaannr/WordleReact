@@ -12,6 +12,7 @@ import Modal from "react-modal";
 import Dropdown from './components/dropdown/dropdown'
 import { LengthTextfield } from './components/textfield/textfield'
 import OppPanel from './components/multiplayer/opponentPanel'
+import LoginForm from './components/loginForm/loginForm'
 
 let indexmap = new Map([
   [0, { state: "empty", letter: "" }],
@@ -49,6 +50,8 @@ export default function App() {
   const [opponentWordIndex, setOpponentWordIndex] = useState(0);
   const [previousOpponentWords, setPreviousOpponentWords] = useState([]);
   const [isMultiplayer, setIsMultiplayer] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
 
   const socket = useRef(null);
 
@@ -87,7 +90,7 @@ export default function App() {
 
     if (socket.current) { return; }
 
-    socket.current = new WebSocket("ws://localhost:8080/ws");
+    socket.current = new WebSocket("https://wordleapi-qhp7.onrender.com/ws");
 
     socket.current.onopen = () => {
       console.log("Successfully connected to the server");
@@ -121,6 +124,9 @@ export default function App() {
   const openSettingsModal = () => setSettingsModalOpen(true);
   const closeSettingsModal = () => setSettingsModalOpen(false);
 
+  const openLoginModal = () => setIsLoginModalOpen(true);
+  const closeLoginModal = () => setIsLoginModalOpen(false);
+
   const enableMultiplayer = () => setIsMultiplayer(true);
   const disableMultiplayer = () => setIsMultiplayer(false);
 
@@ -128,6 +134,7 @@ export default function App() {
     closeWinModal();
     closeLoseModal();
     closeSettingsModal();
+    closeLoginModal();
   };
 
 
@@ -137,9 +144,9 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    setIsPopUpOpen(isSettingsModalOpen || isWinModalOpen || isLoseModalOpen);
+    setIsPopUpOpen(isSettingsModalOpen || isWinModalOpen || isLoseModalOpen || isLoginModalOpen);
 
-  }, [isSettingsModalOpen, isWinModalOpen]);
+  }, [isSettingsModalOpen, isWinModalOpen, isLoseModalOpen, isLoginModalOpen]);
 
   useEffect(() => {
 
@@ -182,6 +189,7 @@ export default function App() {
       <Header
         openSettingsModal={openSettingsModal}
         enableMultiplayer={enableMultiplayer}
+        openLoginModal={openLoginModal}
       />
 
       <OppPanel
@@ -384,6 +392,42 @@ export default function App() {
                   placeholder={"Introduce the word's length (3 to 9)"}
                 />
               </div>
+            </div>
+          </div>
+        </div>
+
+      </Modal>
+
+      <Modal
+        isOpen={isLoginModalOpen}
+        onRequestClose={closeLoginModal}
+        closeTimeoutMS={50}
+        ariaHideApp={false}
+        style={{
+          content: {
+            width: "600px",
+            height: "250px",
+            display: "flex",
+            justifyContent: "center",
+            borderRadius: "10px",
+            borderColor: "#444444",
+            inset: "50% auto auto 50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "#1b1b1b"
+          },
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          }
+        }}
+      >
+
+        <div className="container">
+          <div className="top">
+            <h2>Login/Sign up</h2>
+          </div>
+          <div className="mid">
+            <div className='settings'>
+              <LoginForm />
             </div>
           </div>
         </div>
