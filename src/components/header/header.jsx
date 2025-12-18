@@ -27,21 +27,21 @@ export default function Header({
         <div id="header">
             <div className="menu">
 
-                <button>
+                <button type="button">
                     <img src={statsIcon} height={25} />
                 </button>
 
-                <button onClick={openLoginModal}>
+                <button type="button" onClick={openLoginModal}>
                     <img src={userIcon} height={25} />
                 </button>
 
                 <h1>Wordle</h1>
 
-                <button onClick={openSettingsModal}>
+                <button type="button" onClick={openSettingsModal}>
                     <img src={settingsIcon} height={25} />
                 </button>
 
-                <button onClick={changeMultiplayer}>
+                <button type="button" onClick={changeMultiplayer}>
                     <img
                         src={isMultiplayer ? multiplayerOffIcon : multiplayerIcon}
                         height={25}

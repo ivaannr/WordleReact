@@ -1,12 +1,11 @@
 .box {
-    /*border: 1px solid var(--border-dark-color);*/
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     background-color: var(--secondary-dark-color);
     height: 60vh;
-    width: 50vw;
+    width: 40vw;
     color: var(--text-color);
     margin-bottom: 10%;
 }

@@ -48,6 +48,7 @@ export default function ButtonCell({
             };
 
             if (key === letter.toUpperCase() && !isPopUpOpen) {
+                e.preventDefault();
                 buttonRef.current.click();
             }
         };
