@@ -53,6 +53,7 @@ export default function App() {
   const [isMultiplayer, setIsMultiplayer] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [seenLettersData, setSeenLettersData] = useState([]);
+  const [isDrawModalOpen, setIsDrawModalOpen] = useState(false);
   const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -93,7 +94,7 @@ export default function App() {
             const foundState = match.state;
             const existingState = existing.state;
             const newState = compareStates(existingState, foundState);
-            
+
             cloned[cloned.indexOf(existing)] = { ...existing, state: newState };
           }
         } else {
@@ -106,7 +107,7 @@ export default function App() {
   }, [currentWordIndex]);
 
   useEffect(() => {
-    
+
     const oppWord = opponentData?.letters?.map(d => d.letter).join('').toLowerCase();
     console.log(oppWord);
 
@@ -163,6 +164,9 @@ export default function App() {
   const openLoseModal = () => setLoseModalOpen(true);
   const closeLoseModal = () => setLoseModalOpen(false);
 
+  const openDrawModal = () => setIsDrawModalOpen(true);
+  const closeDrawModal = () => setIsDrawModalOpen(false);
+
   const openSettingsModal = () => setSettingsModalOpen(true);
   const closeSettingsModal = () => setSettingsModalOpen(false);
 
@@ -183,6 +187,7 @@ export default function App() {
     closeLoseModal();
     closeSettingsModal();
     closeLoginModal();
+    closeDrawModal();
   };
 
   useEffect(() => {
@@ -191,9 +196,9 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    setIsPopUpOpen(isSettingsModalOpen || isWinModalOpen || isLoseModalOpen || isLoginModalOpen);
+    setIsPopUpOpen(isSettingsModalOpen || isWinModalOpen || isLoseModalOpen || isLoginModalOpen || isDrawModalOpen);
 
-  }, [isSettingsModalOpen, isWinModalOpen, isLoseModalOpen, isLoginModalOpen]);
+  }, [isSettingsModalOpen, isWinModalOpen, isLoseModalOpen, isLoginModalOpen, isDrawModalOpen]);
 
   useEffect(() => {
 
@@ -381,6 +386,52 @@ export default function App() {
             <h3>The word was: {word}</h3>
             <button
               className='replayLose'
+              onClick={() => { resetGame(); }}
+            >
+              Replay
+            </button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Draw modal */}
+      <Modal
+        isOpen={isDrawModalOpen}
+        onRequestClose={closeDrawModal}
+        closeTimeoutMS={50}
+        ariaHideApp={false}
+        style={{
+          content: {
+            width: "600px",
+            height: "300px",
+            margin: "auto",
+            display: "flex",
+            justifyContent: "center",
+            borderRadius: "10px",
+            borderColor: "#444444",
+            inset: "50% auto auto 50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "#1b1b1b"
+          },
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          }
+        }}
+      >
+        <div>
+          <button
+            className="close"
+            onClick={() => closeDrawModal()}
+          >
+            <img src='src\assets\CLOSE_ICON.png'></img>
+          </button>
+
+          <div className="modal">
+            <h1 className="marginPlus">Wordle</h1>
+            <h2>Draw!</h2>
+            <h3>The word was: {word}</h3>
+            <button
+              className='replayDraw'
               onClick={() => { resetGame(); }}
             >
               Replay
