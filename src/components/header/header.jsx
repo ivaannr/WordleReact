@@ -6,13 +6,15 @@ import userIcon from '../../assets/USER_ICON.png';
 import settingsIcon from '../../assets/SETTINGS_ICON.png';
 import multiplayerIcon from '../../assets/MULTIPLAYER_ICON.png';
 import multiplayerOffIcon from '../../assets/MULTIPLAYER_OFF_ICON.png';
+import replayIcon from '../../assets/REPLAY_ICON.png';
 
 export default function Header({
     openSettingsModal,
     enableMultiplayer,
     openLoginModal,
     isMultiplayer,
-    disableMultiplayer
+    disableMultiplayer,
+    resetGame
 }) {
 
     const changeMultiplayer = () => {
@@ -31,8 +33,8 @@ export default function Header({
                     <img src={statsIcon} height={25} />
                 </button>
 
-                <button type="button" onClick={openLoginModal}>
-                    <img src={userIcon} height={25} />
+                <button type="button" onClick={resetGame}>
+                    <img src={replayIcon} height={25} />
                 </button>
 
                 <h1>Wordle</h1>

@@ -54,6 +54,9 @@ export default function App() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [seenLettersData, setSeenLettersData] = useState([]);
   const [isDrawModalOpen, setIsDrawModalOpen] = useState(false);
+  const [hasWon, setHasWon] = useState(false);
+  const [hasOpponentWon, setHasOpponentWon] = useState(false);
+  const [areKeysEnabled, setAreKeysEnabled] = useState(true);
   const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -75,7 +78,11 @@ export default function App() {
     setPreviousLetters(new Map(previousLettersMap));
     setSeenLettersData([]);
     closeAllModals();
-    //fetchWordAsync();
+    setHasOpponentWon(false);
+    setHasWon(false);
+    setIsMultiplayer(false);
+    setAreKeysEnabled(true); // TODO => FIX KEYS NOT WORKING WHEN CLICKING ON RELOAD BUTTON
+    fetchWordAsync(); 
   };
 
   useEffect(() => {
@@ -104,7 +111,14 @@ export default function App() {
 
       return cloned;
     });
+
   }, [currentWordIndex]);
+
+  useEffect(() => {
+    if (currentWordIndex === 6 && opponentWordIndex === 6 && !hasOpponentWon && !hasWon) {
+      openDrawModal();
+    }
+  }, [currentWordIndex, opponentWordIndex]);
 
   useEffect(() => {
 
@@ -113,11 +127,17 @@ export default function App() {
 
     if (oppWord === opponentData?.wordToGuess?.toLowerCase() && oppWord) {
       console.log("LOSS");
+      setAreKeysEnabled(false);
+      setHasOpponentWon(true);
     }
 
-
-
   }, [opponentData]);
+
+  useEffect(() => {
+    if (hasOpponentWon) {
+      openLoseModal();
+    }
+  }, [hasOpponentWon]);
 
   useEffect(() => {
 
@@ -158,6 +178,10 @@ export default function App() {
 
   }, [isMultiplayer]);
 
+  useEffect(() => {
+    console.warn(areKeysEnabled);
+  }, [areKeysEnabled]);
+
   const openWinModal = () => setWinModalOpen(true);
   const closeWinModal = () => setWinModalOpen(false);
 
@@ -191,8 +215,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    //fetchWordAsync();
-    setWord("Aureo");
+    fetchWordAsync();
   }, []);
 
   useEffect(() => {
@@ -244,6 +267,7 @@ export default function App() {
         disableMultiplayer={disableMultiplayer}
         isMultiplayer={isMultiplayer}
         openLoginModal={openLoginModal}
+        resetGame={resetGame}
       />
 
       <OppPanel
@@ -295,6 +319,10 @@ export default function App() {
         isPopUpOpen={isPopUpOpen}
         openLoseModal={openLoseModal}
         socket={socket.current}
+        isMultiplayer={isMultiplayer}
+        setHasWon={setHasWon}
+        areKeysEnabled={areKeysEnabled}
+        disableKeyboard={() => { setAreKeysEnabled(false); }}
       />
 
       <Footer

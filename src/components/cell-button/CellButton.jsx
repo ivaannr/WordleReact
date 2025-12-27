@@ -33,11 +33,18 @@ export default function ButtonCell({
     openWinModal,
     isPopUpOpen,
     openLoseModal,
-    socket
+    socket,
+    isMultiplayer,
+    setHasWon,
+    areKeysEnabled,
+    disableKeyboard
 }) {
     const buttonRef = useRef();
 
     useEffect(() => {
+
+        if (!areKeysEnabled) { return; }
+
         const handleKeyDown = (e) => {
 
             let key = e.key.toUpperCase();
@@ -55,6 +62,7 @@ export default function ButtonCell({
 
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
+
     }, [letter, isPopUpOpen]);
 
     const modifyLetters = (letter, remove = false) => {
@@ -88,13 +96,15 @@ export default function ButtonCell({
                 console.log("Info couldn't be sent.");
             }
 
-            if (word.toUpperCase() === letters.join("".toUpperCase())) {
+            if (word.toUpperCase() === letters.join("").toUpperCase()) {
+                setHasWon(true);
+                disableKeyboard();
                 openWinModal();
                 console.log("WIN");
                 return;
             }
 
-            if (currentWordIndex === length) {
+            if (currentWordIndex === length && !isMultiplayer) {
                 openLoseModal();
                 console.log("LOSS");
                 return;

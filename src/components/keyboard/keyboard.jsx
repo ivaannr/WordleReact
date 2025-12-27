@@ -23,7 +23,11 @@ const Keyboard = ({
         openWinModal,
         isPopUpOpen,
         openLoseModal,
-        socket
+        socket,
+        isMultiplayer,
+        setHasWon,
+        areKeysEnabled,
+        disableKeyboard
     }) => {
 
     const rows = [
@@ -46,7 +50,8 @@ const Keyboard = ({
         setPreviousLetters,
         previousWords,
         setPreviousWords,
-        isPopUpOpen
+        isPopUpOpen,
+        areKeysEnabled
     };
 
     const renderRow = (lettersRow) => (
@@ -108,6 +113,9 @@ const Keyboard = ({
                             openWinModal={openWinModal}
                             openLoseModal={openLoseModal}
                             socket={socket}
+                            isMultiplayer={isMultiplayer}
+                            setHasWon={setHasWon}
+                            disableKeyboard={disableKeyboard}
                         />
                         <ButtonCell
                             letter="⬅"
