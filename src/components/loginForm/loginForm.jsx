@@ -1,7 +1,7 @@
 import './loginForm.css'
 import { toast } from "react-toastify";
 
-const LoginForm = ({ setName, setPass }) => {
+const LoginForm = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -24,10 +24,6 @@ const LoginForm = ({ setName, setPass }) => {
             );
             return;
         }
-
-
-        setName(name);
-        setPass(pass);
 
         console.log(`User ${name} logged in!`);
         toast.info(`You've logged in as ${name}`);

@@ -57,8 +57,7 @@ export default function App() {
   const [hasWon, setHasWon] = useState(false);
   const [hasOpponentWon, setHasOpponentWon] = useState(false);
   const [areKeysEnabled, setAreKeysEnabled] = useState(true);
-  const [userName, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [user, setUser] = useState(null); 
 
   const socket = useRef(null);
 
@@ -253,9 +252,7 @@ export default function App() {
   }, [difficulty]);
 
   useEffect(() => {
-
     const formattedWord = replaceAccents(word.toUpperCase());
-
     const currentMatches = getWordMatches(formattedWord, letters);
 
     setMatches(currentMatches);
@@ -568,8 +565,6 @@ export default function App() {
           <div className="mid">
             <div className='settings'>
               <LoginForm
-                setName={setUsername}
-                setPass={setPassword}
               />
             </div>
           </div>

@@ -1,12 +1,13 @@
 import React from "react";
 import './header.css'
-
 import statsIcon from '../../assets/STATS_ICON.png';
 import userIcon from '../../assets/USER_ICON.png';
 import settingsIcon from '../../assets/SETTINGS_ICON.png';
 import multiplayerIcon from '../../assets/MULTIPLAYER_ICON.png';
 import multiplayerOffIcon from '../../assets/MULTIPLAYER_OFF_ICON.png';
 import replayIcon from '../../assets/REPLAY_ICON.png';
+import playIcon from '../../assets/PLAY_CIRCLE_ICON.png';
+import { useNavigate } from "react-router-dom";
 
 export default function Header({
     openSettingsModal,
@@ -16,6 +17,10 @@ export default function Header({
     disableMultiplayer,
     resetGame
 }) {
+
+    const navigate = useNavigate();
+
+    const goStats = () => navigate("/stats"); 
 
     const changeMultiplayer = () => {
         if (!isMultiplayer) {
@@ -29,7 +34,7 @@ export default function Header({
         <div id="header">
             <div className="menu">
 
-                <button type="button">
+                <button type="button" onClick={goStats}>
                     <img src={statsIcon} height={25} />
                 </button>
 
@@ -56,3 +61,25 @@ export default function Header({
         </div>
     );
 }
+
+export const StatsHeader = () => {
+    return (
+        <div id="header">
+            <div className="menu">
+
+                <button type="button">
+                    <img src={playIcon} height={25} />
+                </button>
+
+                <h1>Statistics</h1>
+
+                <button type="button">
+                    <img src={settingsIcon} height={25} />
+                </button>
+
+
+            </div>
+            <hr />
+        </div>
+    );
+};
