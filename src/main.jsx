@@ -10,8 +10,8 @@ root.render(
   <UserProvider>
     <BrowserRouter>
       <Routes>
-        <Route path="/*" element={<App />} />
-        <Route path="/stats" element={<StatsScreen />} />
+        <Route path="/*" element={ <App /> } />
+        <Route path="/stats" element={ <StatsScreen /> } />
       </Routes>
     </BrowserRouter>
   </UserProvider>
