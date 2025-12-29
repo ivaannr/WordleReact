@@ -1,17 +1,25 @@
 .statRow {
-    background-color: red;
-    width: 80%;
+    width: 90%;
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 5px;
-    font-size: 25px;
+    padding: 0 0 16px 5px;
+    font-size: 22px;
 }
 
 .statRow img {
-    margin: 0 0 0 19px;
+    margin: 0 0 0 27px;
 }
 
 .statRow p {
-    margin: 0 0 0 75px;
+    margin: 0 0 0 35px;
+}
+
+.statRow > span p {
+    width: 200px;
+}
+
+.statRow > .p {
+    width: 50px;
+    margin: 0 0 0 15px;
 }

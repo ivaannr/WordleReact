@@ -11,18 +11,43 @@ body {
   align-items: center;
 }
 
+/* top right bottom left */
+
+.mainInfo {
+  width: 90%;
+  height: 5%;
+  margin: 16px 0 0 16px;
+  background-color: blue;
+}
+
+.mainInfo p {
+  font-size: 30px;
+  margin: 0;
+}
+
+.pictureBox {
+  width: 90%;
+  height: 40%;
+  margin: 16px 0 0 16px;
+  border-radius: 12px;
+  border: 1px solid #222222;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .statsTitleDiv {
   width: 100%;
-  height: 15%;
+  height: 20%;
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-/* top right bottom left */
 .statsTitleDiv h1 {
-  margin: 25px 0 0 25px;
+  margin: 25px 0 0 35px;
 }
 
 .screen {
@@ -87,3 +112,12 @@ body {
 .tDiv h2 {
   margin: 0 0 20px 0;
 }
+
+.container {
+  width: 100%;
+  height: 85%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
