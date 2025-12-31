@@ -13,6 +13,7 @@ import skullIcon from '../../assets/SKULL_ICON.png';
 import fav from '../../assets/favicon.png';
 import Dropdown from '../dropdown/dropdown';
 import UsersTable from './usersTable/UsersTable';
+import { SimpleTab } from '../tabs/Tabs';
 
 const users = [
     { id: 123, username: "User1234567890", wins: 2, losses: 5, totalMatches: 10 },
@@ -25,7 +26,6 @@ const users = [
 const StatsScreen = () => {
     const [numberOfPlayers, setNumberOfPlayers] = useState(5);
     const [playersData, setPlayersData] = useState([]);
-
     const { user, setUser } = useContext(UserContext);
 
     const winLosePercentage = (user?.multiplayerWins / user?.multiplayerLosses) * 100;
@@ -43,8 +43,6 @@ const StatsScreen = () => {
     //         return;
     //     }
     // }, []);
-
-    
 
     return (
         <>
@@ -69,9 +67,13 @@ const StatsScreen = () => {
                         <div className="bottomStatsLeftDiv">
                             <div className="statsTitleDiv">
                                 <h1>Leaderboards</h1>
-
+                                <SimpleTab
+                                    titles={[5, 10, 25, 50]}
+                                    value={numberOfPlayers}
+                                    setValue={setNumberOfPlayers}
+                                />
                             </div>
-                            <UsersTable users={users}/>
+                            <UsersTable users={users} />
 
                         </div>
                         <div className="bottomStatsRightDiv">
@@ -84,9 +86,7 @@ const StatsScreen = () => {
                                         "Games Played", "Words Guessed", "Words Missed",
                                         "Multiplayer Wins", "Multiplayer Losses", "Win / Lose %"
                                     ].map((field, index) => (
-                                        <>
-                                            <StatRow key={field} icon={icons[index]} title={field} value={values[index] ?? 0} />
-                                        </>
+                                        <StatRow key={field} icon={icons[index]} title={field} value={values[index] ?? 0} />
                                     ))
                                 }
                             </div>
