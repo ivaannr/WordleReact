@@ -17,6 +17,7 @@ import fav from '../../assets/favicon.png';
 import UsersTable from './usersTable/UsersTable';
 
 const StatsScreen = () => {
+    const [currentFilter, setCurrentFilter] = useState("elo");
     const [numberOfPlayers, setNumberOfPlayers] = useState(5);
     const [playersData, setPlayersData] = useState([]);
     const { user, setUser } = useContext(UserContext);
@@ -37,23 +38,22 @@ const StatsScreen = () => {
     useEffect(() => {
         const loadTopUsers = async () => {
             try {
-                const playersData = await fetchTopUsers(numberOfPlayers);
+                const playersData = await fetchTopUsers(numberOfPlayers, currentFilter);
                 setPlayersData(playersData);
             } catch (ex) {
                 console.log(ex);
             }
         };
-        console.log("The number of players now is:", numberOfPlayers);
+
         loadTopUsers();
 
-    }, [numberOfPlayers]);
+    }, [numberOfPlayers, currentFilter]);
 
     useEffect(() => {
-        console.log(user);
-        const winLosePercentage = ((user?.wins / user?.wins) * 100).toFixed();
+        const winLosePercentage = ((user?.wins / user?.losses) * 100).toFixed();
         const totalMatches = user?.wordsGuessed + user?.wordsMissed + user?.wins + user?.losses;
 
-        console.log(`winLose ${winLosePercentage} || matches ${totalMatches}`);
+
         setValues([totalMatches, user?.wins, user?.losses, user?.wordsGuessed, user?.wordsMissed, `${isNaN(winLosePercentage) ? '0' : winLosePercentage}%`]);
 
     }, [user]);
@@ -91,7 +91,7 @@ const StatsScreen = () => {
                                     setValue={setNumberOfPlayers}
                                 />
                             </div>
-                            <UsersTable users={playersData} />
+                            <UsersTable users={playersData} setCurrentFilter={setCurrentFilter}/>
 
                         </div>
                         <div className="bottomStatsRightDiv">

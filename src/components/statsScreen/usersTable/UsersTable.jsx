@@ -1,16 +1,24 @@
 import './UsersTable.css'
 
-const UsersTable = ({ users }) => {
+const UsersTable = ({ users, setCurrentFilter }) => {
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    const filter = e.target.textContent.toString().toLowerCase();
+    console.log(filter);
+    setCurrentFilter(filter);
+  };
+
   return (
     <table className='table'>
       <thead>
         <tr className='tr'>
           <th className='pad'>Username</th>
-          <th className='pad'>Total Matches</th>
-          <th className='pad'>Wins</th>
-          <th className='pad'>Losses</th>
-          <th className='pad'>ELO</th>
-          <th className='pad'>W/L %</th>
+          <th className='pad' onClick={handleClick}>Total Matches</th>
+          <th className='pad' onClick={handleClick}>Wins</th>
+          <th className='pad' onClick={handleClick}>Losses</th>
+          <th className='pad' onClick={handleClick}>ELO</th>
+          <th className='pad' onClick={handleClick}>W/L %</th>
         </tr>
       </thead>
       <tbody>

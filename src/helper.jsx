@@ -21,6 +21,22 @@ function sendInfo(socket, message) {
 }
 
 /**
+ * 
+ * @param {Array<Object>} players 
+ * @param {String} filter 
+ * @returns {Array<Object>} the sorted player list 
+ */
+function sortPlayers(players, filter) {
+    switch (filter) {
+        case "elo": return players.sort((a, b) => Number(b.elo) - Number(a.elo));
+        case "wins": return players.sort((a, b) => Number(b.wins) - Number(a.wins));
+        case "losses": return players.sort((a, b) => Number(b.losses) - Number(a.losses));
+        case "total matches": return players.sort((a, b) => Number(Number(b.losses) + Number(b.wins)) - Number(Number(a.losses) + Number(a.wins)));
+        case "winLoseRatio": return players.sort((a, b) => Number(((b?.wins / b?.losses) * 100).toFixed()) - Number(((a?.wins / a?.losses) * 100).toFixed()));
+    }
+}
+
+/**
  * Parses the submmited word info as an object to be sent to the other player
  * @param {Array<Object>} info
  * @param {String} wordToGuess
@@ -218,5 +234,6 @@ export {
     isMatchFinished, 
     sendInfo, 
     parseInfo,
-    compareStates
+    compareStates,
+    sortPlayers
 }
