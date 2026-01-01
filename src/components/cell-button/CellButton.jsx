@@ -1,9 +1,10 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useContext } from "react";
 import Cell from "../letter-cell/cell";
 import './CellButton.css'
 import { toast } from "react-toastify";
 import { createLettersData, sendInfo, parseInfo } from "../../helper";
-
+import { UserContext } from "../../context/UserContext";
+import { modifyUser } from "../../helper.fetching"
 
 let previousLettersMap = new Map([]);
 Array.from({ length: 5 }).forEach((_, i) => {
@@ -40,6 +41,7 @@ export default function ButtonCell({
     disableKeyboard
 }) {
     const buttonRef = useRef();
+    const { user, setUser } = useContext(UserContext);
 
     useEffect(() => {
 
@@ -104,12 +106,35 @@ export default function ButtonCell({
                 disableKeyboard();
                 openWinModal();
                 console.log("WIN");
+
+                if (isMultiplayer) {
+                    if (user != null) {
+                        const patchedUser = modifyUser(user.id, {
+                            wins: 1
+                        });
+                        setUser(patchedUser);
+                    }
+                } else {
+                    if (user != null) {
+                        const patchedUser = modifyUser(user.id, {
+                            wordsGuessed: 1
+                        });
+                        setUser(patchedUser);
+                    }
+                }
+
                 return;
             }
 
             if (currentWordIndex === length && !isMultiplayer) {
                 openLoseModal();
                 console.log("LOSS");
+                if (user != null) {
+                    const patchedUser = modifyUser(user.id, {
+                        wordsMisses: 1
+                    });
+                    setUser(patchedUser);
+                }
                 return;
             }
 

@@ -20,11 +20,9 @@ const StatsScreen = () => {
     const [playersData, setPlayersData] = useState([]);
     const { user, setUser } = useContext(UserContext);
 
-    const winLosePercentage = (user?.multiplayerWins / user?.multiplayerLosses) * 100;
-    const totalMatches = user?.wordsGuessed + user?.wordsMissed + user?.multiplayerWins + user?.multiplayerLosses;
-
-    const values = [totalMatches, user?.wordsGuessed, user?.wordsMissed, user?.multiplayerWins, user?.multiplayerLosses, `${winLosePercentage}%`];
     const icons = [gamesIcon, crownIcon, missIcon, winIcon, skullIcon, percentIcon];
+
+    const [values, setValues] = useState([]);
 
     const navigate = useNavigate();
     const logged = user != null;
@@ -47,7 +45,27 @@ const StatsScreen = () => {
         };
         console.log("The number of players now is:", numberOfPlayers);
         loadTopUsers();
+
     }, [numberOfPlayers]);
+
+    useEffect(() => {
+        console.log(user);
+        const winLosePercentage = ((user?.wins / user?.wins) * 100).toFixed();
+        const totalMatches = user?.wordsGuessed + user?.wordsMissed + user?.wins + user?.losses;
+
+        console.log(`winLose ${winLosePercentage} || matches ${totalMatches}`);
+        setValues([totalMatches, user?.wins, user?.losses, user?.wordsGuessed, user?.wordsMissed, `${isNaN(winLosePercentage) ? '0' : winLosePercentage}%`]);
+
+    }, [user]);
+
+    useEffect(() => {
+        console.log(user != null ? "logged in" : "not logged in");
+        console.log(values);
+    }, []);
+
+    useEffect(() => {
+        console.log("values:", values);
+    }, [values]);
 
     return (
         <>

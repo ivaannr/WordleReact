@@ -34,6 +34,8 @@ const LoginForm = ( { setUser } ) => {
             id: '',
             username: name,
             password: pass,
+            wordsGuessed: 0,
+            wordsMissed: 0,
             ELO: 1000,
             wins: 0,
             losses: 0
@@ -57,10 +59,6 @@ const LoginForm = ( { setUser } ) => {
         toast.info(`You've logged in as ${name}`);
     };
 
-    const onTextChanged = (e) => {
-
-    };
-
     return (
         <div className="formContainer">
             <form onSubmit={handleSubmit}>
@@ -72,7 +70,7 @@ const LoginForm = ( { setUser } ) => {
                         id='name'
                         rows={1}
                         placeholder='🙎 Username...'
-                        maxLength={15}
+                        maxLength={14}
                         minLength={5}
                     >
                     </textarea>
@@ -85,7 +83,7 @@ const LoginForm = ( { setUser } ) => {
                         id='password'
                         rows={1}
                         placeholder='🔒 Password...'
-                        maxLength={10}
+                        maxLength={14}
                         minLength={5}
                     >
                     </textarea>

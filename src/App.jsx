@@ -2,7 +2,7 @@ import './App.css'
 import './WinModal.css'
 import './SettingsModal.css'
 import "react-toastify/dist/ReactToastify.css"
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
 import { fetchWord, getWordMatches, replaceAccents, compareStates } from './helper'
 import { ToastContainer } from 'react-toastify'
 import Header from './components/header/header'
@@ -14,6 +14,8 @@ import { LengthTextfield } from './components/textfield/textfield'
 import OppPanel from './components/multiplayer/opponentPanel'
 import LoginForm from './components/loginForm/loginForm'
 import Footer from './components/footer/footer'
+import { UserContext } from './context/UserContext'
+import { modifyUser } from './helper.fetching'
 
 let indexmap = new Map([
   [0, { state: "empty", letter: "" }],
@@ -57,7 +59,8 @@ export default function App() {
   const [hasWon, setHasWon] = useState(false);
   const [hasOpponentWon, setHasOpponentWon] = useState(false);
   const [areKeysEnabled, setAreKeysEnabled] = useState(true);
-  const [user, setUser] = useState(null); 
+  
+  const { user, setUser } = useContext(UserContext);
 
   const socket = useRef(null);
 
@@ -83,6 +86,10 @@ export default function App() {
     enableKeyboard();
     fetchWordAsync(); 
   };
+
+  useEffect(() => {
+    console.log(user != null ? "logged in" : "not logged in");
+  }, []);
 
   useEffect(() => {
     setSeenLettersData(prev => {
@@ -121,11 +128,17 @@ export default function App() {
 
   useEffect(() => {
 
+    const updatePlayerLosses = async () => {
+      const newUser = await modifyUser(user.id, { losses: 1 });
+      setUser(newUser);
+    };
+
     const oppWord = opponentData?.letters?.map(d => d.letter).join('').toLowerCase();
     console.log(oppWord);
 
     if (oppWord === opponentData?.wordToGuess?.toLowerCase() && oppWord) {
       console.log("LOSS");
+      updatePlayerLosses();
       setAreKeysEnabled(false);
       setHasOpponentWon(true);
     }

@@ -32,7 +32,7 @@ async function fetchTopUsers(top) {
  * @param {Object} user 
  * @returns The response from the API in json.
  */
-async function registerUser(user, pass) {
+async function registerUser(user) {
     //const URL = `https://wordleapi-qhp7.onrender.com/players`;
     const URL = `http://localhost:8080/players`;
     try {
@@ -49,7 +49,7 @@ async function registerUser(user, pass) {
         );
 
         if (!res.ok) {
-            throw new Error(`HTTP Error: ${res.status} || User '${user}' couldn't be registered.`);
+            throw new Error(`HTTP Error: ${res.status} || User couldn't be registered.`);
         }
 
         const userRegistered = await res.json();
@@ -82,14 +82,14 @@ async function userExists(userdata) {
         );
 
         if (!res.ok) {
-            throw new Error(`HTTP Error: ${res.status} || User '${user}' couldn't be registered.`);
+            throw new Error(`HTTP Error: ${res.status} || User couldn't be registered.`);
         }
 
         const data = await res.json();
 
         if (data.status === 'declined') { throw new Error('HTTP request was denied.'); }
 
-        const user = data.player; 
+        const user = data.player;
 
         return user;
     } catch (exception) {
@@ -97,4 +97,39 @@ async function userExists(userdata) {
     }
 }
 
-export { fetchTopUsers, registerUser, userExists }
+/**
+ * 
+ * @param {String} userID 
+ * @param {Object} modifyArgs 
+ * @returns {Object} The modified user
+ */
+async function modifyUser(userID, modifyArgs) {
+    //const URL = `https://wordleapi-qhp7.onrender.com/players`;
+    const URL = `http://localhost:8080/players/${userID}`;
+    try {
+
+        const res = await fetch(
+            URL,
+            {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(modifyArgs)
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error(`HTTP Error: ${res.status} || User couldn't be registered.`);
+        }
+
+        const responseData = await res.json();
+         
+        return responseData.player;
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+}
+
+export { fetchTopUsers, registerUser, userExists, modifyUser }
