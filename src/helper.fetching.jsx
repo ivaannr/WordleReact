@@ -119,9 +119,7 @@ async function modifyUser(userID, modifyArgs) {
             }
         );
 
-        if (!res.ok) {
-            throw new Error(`HTTP Error: ${res.status} || User couldn't be registered.`);
-        }
+        if (!res.ok) { throw new Error(`HTTP Error: ${res.status} || User couldn't be registered.`); }
 
         const responseData = await res.json();
          

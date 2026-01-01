@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { SimpleTab } from '../tabs/Tabs';
 import { fetchTopUsers } from '../../helper.fetching';
+import { toast } from 'react-toastify';
 import StatRow from './statRow/StatRow';
 import winIcon from '../../assets/MEDALS_ICON.png';
 import percentIcon from '../../assets/PERCENT_ICON.png';
@@ -27,12 +28,11 @@ const StatsScreen = () => {
     const navigate = useNavigate();
     const logged = user != null;
 
-    // useEffect(() => {
-    //     if (!logged) {
-    //         navigate("/");
-    //         return;
-    //     }
-    // }, []);
+    useEffect(() => {
+        if (!logged) {
+            toast.warn("You haven't logged in.");
+        }
+    }, []);
 
     useEffect(() => {
         const loadTopUsers = async () => {
@@ -40,7 +40,7 @@ const StatsScreen = () => {
                 const playersData = await fetchTopUsers(numberOfPlayers);
                 setPlayersData(playersData);
             } catch (ex) {
-                console.error(ex);
+                console.log(ex);
             }
         };
         console.log("The number of players now is:", numberOfPlayers);
@@ -60,12 +60,7 @@ const StatsScreen = () => {
 
     useEffect(() => {
         console.log(user != null ? "logged in" : "not logged in");
-        console.log(values);
     }, []);
-
-    useEffect(() => {
-        console.log("values:", values);
-    }, [values]);
 
     return (
         <>
