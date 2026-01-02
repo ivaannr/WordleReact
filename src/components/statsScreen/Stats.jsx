@@ -33,6 +33,8 @@ const StatsScreen = () => {
         if (!logged) {
             toast.warn("You haven't logged in.");
         }
+
+        console.log( user );
     }, []);
 
     useEffect(() => {

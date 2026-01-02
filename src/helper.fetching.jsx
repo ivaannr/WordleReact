@@ -56,11 +56,12 @@ async function registerUser(user) {
             throw new Error(`HTTP Error: ${res.status} || User couldn't be registered.`);
         }
 
-        const userRegistered = await res.json();
-        console.log("User registered correctly:", userRegistered);
-        return userRegistered;
+        const resJSON = await res.json();
+        console.log("User registered correctly:", resJSON);
+        return resJSON.player;
     } catch (exception) {
         console.log("An error ocurred:", exception);
+        return null;
     }
 }
 
@@ -98,6 +99,7 @@ async function userExists(userdata) {
         return user;
     } catch (exception) {
         console.log("An error ocurred:", exception);
+        return null;
     }
 }
 
@@ -108,7 +110,7 @@ async function userExists(userdata) {
  * @returns {Object} The modified user
  */
 async function modifyUser(userID, modifyArgs) {
-    //const URL = `https://wordleapi-qhp7.onrender.com/players`;
+    //const URL = `https://wordleapi-qhp7.onrender.com/players/${userID}``;
     console.log(userID);
     const URL = `http://localhost:8080/players/${userID}`;
     try {

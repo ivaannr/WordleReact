@@ -109,20 +109,27 @@ export default function ButtonCell({
 
                 if (isMultiplayer) {
                     if (user != null) {
-                        const patchedUser = modifyUser(user.id, {
-                            wins: 1
-                        });
-                        setUser(patchedUser);
+                        const patchUser = async () => {
+                            const patchedUser = await modifyUser(user.id, {
+                                wins: 1
+                            });
+                            console.log("Fetched New User:", patchedUser);
+                            setUser(patchedUser);
+                        };
+                        patchUser();
                     }
                 } else {
                     if (user != null) {
-                        const patchedUser = modifyUser(user.id, {
-                            wordsGuessed: 1
-                        });
-                        setUser(patchedUser);
+                        const patchUser = async () => {
+                            const patchedUser = await modifyUser(user.id, {
+                                wordsGuessed: 1
+                            });
+                            console.log("Fetched New User:", patchedUser);
+                            setUser(patchedUser);
+                        };
+                        patchUser();
                     }
                 }
-
                 return;
             }
 

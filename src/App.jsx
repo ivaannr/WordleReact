@@ -59,7 +59,7 @@ export default function App() {
   const [hasWon, setHasWon] = useState(false);
   const [hasOpponentWon, setHasOpponentWon] = useState(false);
   const [areKeysEnabled, setAreKeysEnabled] = useState(true);
-  
+
   const { user, setUser } = useContext(UserContext);
 
   const socket = useRef(null);
@@ -84,12 +84,12 @@ export default function App() {
     setHasWon(false);
     setIsMultiplayer(false);
     enableKeyboard();
-    fetchWordAsync(); 
+    fetchWordAsync();
   };
 
   useEffect(() => {
     console.log(user != null ? "logged in" : "not logged in");
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     setSeenLettersData(prev => {
@@ -130,6 +130,7 @@ export default function App() {
 
     const updatePlayerLosses = async () => {
       const newUser = await modifyUser(user.id, { losses: 1 });
+      console.log("Fetched New User:", newUser);
       setUser(newUser);
     };
 
@@ -188,7 +189,7 @@ export default function App() {
     };
 
   }, [isMultiplayer]);
-  
+
   const openWinModal = () => setWinModalOpen(true);
   const closeWinModal = () => setWinModalOpen(false);
 
@@ -537,44 +538,6 @@ export default function App() {
                   placeholder={"Introduce the word's length (3 to 9)"}
                 />
               </div>
-            </div>
-          </div>
-        </div>
-
-      </Modal>
-
-      {/* Login modal */}
-      <Modal
-        isOpen={isLoginModalOpen}
-        onRequestClose={closeLoginModal}
-        closeTimeoutMS={50}
-        ariaHideApp={false}
-        style={{
-          content: {
-            width: "600px",
-            height: "250px",
-            display: "flex",
-            justifyContent: "center",
-            borderRadius: "10px",
-            borderColor: "#444444",
-            inset: "50% auto auto 50%",
-            transform: "translate(-50%, -50%)",
-            backgroundColor: "#1b1b1b"
-          },
-          overlay: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-          }
-        }}
-      >
-
-        <div className="container">
-          <div className="top">
-            <h2>Login/Sign up</h2>
-          </div>
-          <div className="mid">
-            <div className='settings'>
-              <LoginForm
-              />
             </div>
           </div>
         </div>

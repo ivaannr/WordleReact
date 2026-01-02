@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { registerUser, userExists } from '../../helper.fetching';
 import { useNavigate } from 'react-router-dom';
 
-const LoginForm = ( { setUser } ) => {
+const LoginForm = ({ setUser }) => {
 
     const navigate = useNavigate();
 
@@ -44,19 +44,27 @@ const LoginForm = ( { setUser } ) => {
         const existingUser = await userExists(user);
 
         if (existingUser) {
-            
+
             setUser(existingUser);
-            toast.info(`Logging in as ${user.username}...`);
-            console.log(`User has logged in as ${user.username}`);
+            toast.info(`Logging in as ${existingUser.username}...`);
+            console.log(`User ${existingUser.username} logged in with id ${existingUser.id}!`);
             navigate("/");
             return;
         }
 
-        const response = await registerUser(user);
+        const player = await registerUser(user);
 
-        console.log('Response:', response);
-        console.log(`User ${name} logged in!`);
-        toast.info(`You've logged in as ${name}`);
+        if (!player) {
+            toast.error("Registration failed");
+            return;
+        }
+
+        console.log({ player });
+
+        setUser(player);
+
+        console.log(`User ${name} logged in with id ${player.id}!`);
+        toast.success(`Welcome ${player.username}!`);
     };
 
     return (
