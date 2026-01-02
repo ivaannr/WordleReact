@@ -64,7 +64,7 @@ const StatsScreen = () => {
 
     return (
         <>
-            <StatsHeader />
+            <StatsHeader user={user} />
 
             <div className="screen">
                 <div className="profileDiv">

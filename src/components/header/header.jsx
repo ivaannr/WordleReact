@@ -7,6 +7,8 @@ import multiplayerIcon from '../../assets/MULTIPLAYER_ICON.png';
 import multiplayerOffIcon from '../../assets/MULTIPLAYER_OFF_ICON.png';
 import replayIcon from '../../assets/REPLAY_ICON.png';
 import playIcon from '../../assets/PLAY_CIRCLE_ICON.png';
+import userUnloggedIcon from '../../assets/USER_UNLOGGED_ICON.png';
+import loggedNoPfpIcon from '../../assets/USER_LOGGED_NO_PFP_ICON.png';
 import { useNavigate } from "react-router-dom";
 
 export default function Header({
@@ -15,12 +17,14 @@ export default function Header({
     openLoginModal,
     isMultiplayer,
     disableMultiplayer,
-    resetGame
+    resetGame,
+    user
 }) {
 
     const navigate = useNavigate();
 
     const goStats = () => navigate("/stats");
+    const goLogin = () => navigate("/login");
 
     const changeMultiplayer = () => {
         if (!isMultiplayer) {
@@ -32,20 +36,28 @@ export default function Header({
 
     return (
         <div id="header">
+            <img
+                src={user != undefined || user != null ? user?.profilePicture ?? loggedNoPfpIcon : userUnloggedIcon}
+                height={50}
+                className="headerImg"
+                title="Login/Register"
+                onClick={goLogin}
+            />
+
             <div className="menu">
 
                 <button type="button" onClick={goStats}>
-                    <img src={statsIcon} height={25} />
+                    <img src={statsIcon} height={25} title="Player stats" />
                 </button>
 
                 <button type="button" onClick={resetGame}>
-                    <img src={replayIcon} height={25} />
+                    <img src={replayIcon} height={25} title="Replay" />
                 </button>
 
                 <h1>Wordle</h1>
 
                 <button type="button" onClick={openSettingsModal}>
-                    <img src={settingsIcon} height={25} />
+                    <img src={settingsIcon} height={25} title="Game settings" />
                 </button>
 
                 <button type="button" onClick={changeMultiplayer}>
@@ -53,6 +65,7 @@ export default function Header({
                         src={isMultiplayer ? multiplayerOffIcon : multiplayerIcon}
                         height={25}
                         alt="Multiplayer toggle"
+                        title={!isMultiplayer ? "Play multiplayer" : "Disable Multiplayer"}
                     />
                 </button>
 
@@ -62,11 +75,21 @@ export default function Header({
     );
 }
 
-export const StatsHeader = () => {
+export const StatsHeader = ({ user }) => {
     const navigate = useNavigate();
+    const goLogin = () => navigate("/login");
 
     return (
         <div id="header">
+
+            <img
+                src={user != undefined || user != null ? user?.profilePicture ?? loggedNoPfpIcon : userUnloggedIcon}
+                height={50}
+                className="headerImg"
+                title="Login/Register"
+                onClick={goLogin}
+            />
+            
             <div className="menu">
 
                 <button type="button" onClick={() => navigate("/")}>

@@ -134,7 +134,6 @@ export default function App() {
     };
 
     const oppWord = opponentData?.letters?.map(d => d.letter).join('').toLowerCase();
-    console.log(oppWord);
 
     if (oppWord === opponentData?.wordToGuess?.toLowerCase() && oppWord) {
       console.log("LOSS");
@@ -189,11 +188,7 @@ export default function App() {
     };
 
   }, [isMultiplayer]);
-
-  useEffect(() => {
-    console.warn(areKeysEnabled);
-  }, [areKeysEnabled]);
-
+  
   const openWinModal = () => setWinModalOpen(true);
   const closeWinModal = () => setWinModalOpen(false);
 
@@ -281,6 +276,7 @@ export default function App() {
         isMultiplayer={isMultiplayer}
         openLoginModal={openLoginModal}
         resetGame={resetGame}
+        user={user}
       />
 
       <OppPanel

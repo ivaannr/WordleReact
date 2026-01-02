@@ -29,10 +29,24 @@ hr {
 
 .menu > button {
     padding-top: 6px;
-    transition: transform 0.5s ease;
+    transition: 0.5s ease;
 }
 
 .menu > button:hover {
     transform: scale(1.2);
 }
+
+.headerImg {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-90%);
+    transition: 0.5s ease;
+}
+
+.headerImg:hover {
+    opacity: 50%;
+    transition: 0.5s ease;
+}
+
 
