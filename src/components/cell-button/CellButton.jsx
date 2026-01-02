@@ -137,10 +137,13 @@ export default function ButtonCell({
                 openLoseModal();
                 console.log("LOSS");
                 if (user != null) {
-                    const patchedUser = modifyUser(user.id, {
-                        wordsMisses: 1
-                    });
-                    setUser(patchedUser);
+                    const patchUser = async () => {
+                        const patchedUser = modifyUser(user.id, {
+                            wordsMisses: 1
+                        });
+                        setUser(patchedUser);
+                    };
+                    patchUser();
                 }
                 return;
             }
