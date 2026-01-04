@@ -18,7 +18,7 @@ import UsersTable from './usersTable/UsersTable';
 
 const StatsScreen = () => {
     const [filterDescending, setFilterDescending] = useState(true);
-    const [currentFilter, setCurrentFilter] = useState("elo");
+    const [currentFilter, setCurrentFilter] = useState("wins");
     const [numberOfPlayers, setNumberOfPlayers] = useState(5);
     const [playersData, setPlayersData] = useState([]);
     const { user, setUser } = useContext(UserContext);
@@ -33,11 +33,10 @@ const StatsScreen = () => {
     const toggleDescending = () => setFilterDescending(descending => !descending);
 
     useEffect(() => {
+        console.log(user != null ? "logged in" : "not logged in");
         if (!logged) {
             toast.warn("You haven't logged in.");
         }
-
-        console.log( user );
     }, []);
 
     useEffect(() => {
@@ -55,16 +54,12 @@ const StatsScreen = () => {
     }, [numberOfPlayers, currentFilter, filterDescending]);
 
     useEffect(() => {
-        const winLosePercentage = ((user?.wins / user?.losses) * 100).toFixed();
+        const winLosePercentage = (((Number(user?.wins) / Number(user?.losses)) / Number(user?.totalMatches) ) * 100).toFixed(2);
         const totalMatches = user?.wordsGuessed + user?.wordsMissed + user?.wins + user?.losses;
 
         setValues([totalMatches, user?.wins, user?.losses, user?.wordsGuessed, user?.wordsMissed, `${isNaN(winLosePercentage) ? '0' : winLosePercentage}%`]);
 
     }, [user]);
-
-    useEffect(() => {
-        console.log(user != null ? "logged in" : "not logged in");
-    }, []);
 
     return (
         <>
@@ -105,8 +100,8 @@ const StatsScreen = () => {
                             <div className='container'>
                                 {
                                     [
-                                        "Games Played", "Words Guessed", "Words Missed",
-                                        "Multiplayer Wins", "Multiplayer Losses", "Win / Lose %"
+                                        "Games Played", "Multiplayer Wins", "Multiplayer Losses",
+                                        "Words Guessed", "Words Missed", "Win / Lose %"
                                     ].map((field, index) => (
                                         <StatRow key={field} icon={icons[index]} title={field} value={values[index] ?? 0} />
                                     ))
