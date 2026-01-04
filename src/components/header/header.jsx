@@ -38,7 +38,7 @@ export default function Header({
     return (
         <div id="header">
             <img
-                src={!user ? userUnloggedIcon : (convert64ToURL(user?.profilePicture) ?? loggedNoPfpIcon)} 
+                src={!user ? userUnloggedIcon : !user.profilePicture ? loggedNoPfpIcon : (convert64ToURL(user?.profilePicture))}
                 height={50}
                 width={50}
                 className="headerImg"
@@ -85,7 +85,7 @@ export const StatsHeader = ({ user }) => {
         <div id="header">
 
             <img
-                src={!user ? userUnloggedIcon : (convert64ToURL(user?.profilePicture) ?? loggedNoPfpIcon)} 
+                src={!user ? userUnloggedIcon : !user.profilePicture ? loggedNoPfpIcon : (convert64ToURL(user?.profilePicture))}
                 height={50}
                 width={50}
                 className="headerImg"

@@ -11,6 +11,21 @@ body {
   align-items: center;
 }
 
+.buttonWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.chartDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 25px;
+}
+
 .mainInfo {
   width: 90%;
   height: 5%;

@@ -46,6 +46,27 @@ function sortPlayers(players, filter, descending = true) {
     }
 }
 
+function sortChart(players, filter, descending) {
+
+    if (!["wins", "losses", "total matches"].includes(filter)) { return players.sort((a, b) => Number(b.wins) - Number(a.wins));; } 
+
+    console.log(filter);
+
+    if (descending) {
+        switch (filter) {
+            case "wins": return players.sort((a, b) => Number(b.wins) - Number(a.wins));
+            case "losses": return players.sort((a, b) => Number(b.losses) - Number(a.losses));
+            case "total matches": return players.sort((a, b) => Number(Number(b.losses) + Number(b.wins)) - Number(Number(a.losses) + Number(a.wins)));
+        }
+    } else {
+        switch (filter) {
+            case "wins": return players.sort((a, b) => Number(a.wins) - Number(b.wins));
+            case "losses": return players.sort((a, b) => Number(a.losses) - Number(b.losses));
+            case "total matches": return players.sort((a, b) => Number(Number(a.losses) + Number(a.wins)) - Number(Number(b.losses) + Number(b.wins)));
+        }
+    }
+}
+
 /**
  * Parses the submmited word info as an object to be sent to the other player
  * @param {Array<Object>} info
@@ -100,7 +121,7 @@ function getColor(state) {
 }
 
 function convert64ToURL(base64, mimeType = "image/png") {
-  return `data:${mimeType};base64,${base64}`;
+    return `data:${mimeType};base64,${base64}`;
 };
 
 /**
@@ -250,5 +271,6 @@ export {
     parseInfo,
     compareStates,
     sortPlayers,
+    sortChart,
     convert64ToURL
 }

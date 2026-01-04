@@ -1,0 +1,15 @@
+.options {
+    transition: 0.50s ease;
+    width: 90%;
+    height: 5%;
+    padding: 5% 0 5% 0;
+    margin: 5% 0 -3% 0;
+    border-radius: 15px;
+}
+
+.options:hover {
+    transition: 0.50s ease;
+    filter: brightness(1.3);
+}
+
+

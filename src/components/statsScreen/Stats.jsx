@@ -4,9 +4,10 @@ import { UserContext } from '../../context/UserContext';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { SimpleTab } from '../tabs/Tabs';
-import { convert64ToURL } from '../../helper';
+import { convert64ToURL, sortChart } from '../../helper';
 import { fetchTopUsers } from '../../helper.fetching';
 import { toast } from 'react-toastify';
+import { SimpleBarChart } from '../charts/BarCharts';
 import StatRow from './statRow/StatRow';
 import winIcon from '../../assets/MEDALS_ICON.png';
 import percentIcon from '../../assets/PERCENT_ICON.png';
@@ -14,18 +15,18 @@ import gamesIcon from '../../assets/SWORDS_ICON.png';
 import missIcon from '../../assets/CROSS_ICON.png';
 import crownIcon from '../../assets/CROWN_ICON.png';
 import skullIcon from '../../assets/SKULL_ICON.png';
-import fav from '../../assets/favicon.png';
 import noPfp from '../../assets/USER_LOGGED_NO_PFP_ICON.png'
 import unlogged from '../../assets/USER_UNLOGGED_ICON.png'
 import UsersTable from './usersTable/UsersTable';
-import PhotoInput from '../loginForm/photoInput/PhotoInput';
+import { PieChartWithCustomizedLabel } from '../charts/PieCharts';
+import OptionsButton from './optionsButton/OptionsButton';
 
 const StatsScreen = () => {
     const [filterDescending, setFilterDescending] = useState(true);
     const [currentFilter, setCurrentFilter] = useState("wins");
     const [numberOfPlayers, setNumberOfPlayers] = useState(5);
     const [playersData, setPlayersData] = useState([]);
-    const [file, setFile] = useState(null);
+    const [keys, setKeys] = useState([]);
     const { user, setUser } = useContext(UserContext);
 
     const icons = [gamesIcon, crownIcon, missIcon, winIcon, skullIcon, percentIcon];
@@ -59,10 +60,11 @@ const StatsScreen = () => {
     }, [numberOfPlayers, currentFilter, filterDescending]);
 
     useEffect(() => {
-        const winLosePercentage = (((Number(user?.wins) / Number(user?.losses)) / Number(user?.totalMatches) ) * 100).toFixed(2);
+        const winLosePercentage = (((Number(user?.wins) / Number(user?.losses)) / Number(user?.totalMatches)) * 100).toFixed(2);
         const totalMatches = user?.wordsGuessed + user?.wordsMissed + user?.wins + user?.losses;
 
         setValues([totalMatches, user?.wins, user?.losses, user?.wordsGuessed, user?.wordsMissed, `${isNaN(winLosePercentage) ? '0' : winLosePercentage}%`]);
+        setKeys(["wins", "losses"]);
 
     }, [user]);
 
@@ -73,8 +75,8 @@ const StatsScreen = () => {
             <div className="screen">
                 <div className="profileDiv">
                     <div className="pictureBox">
-                        <img 
-                            src={!user ? unlogged : (convert64ToURL(user?.profilePicture) ?? noPfp)} 
+                        <img
+                            src={!user ? unlogged : !user.profilePicture ? noPfp : (convert64ToURL(user?.profilePicture))}
                             height={250}
                             width={250}
                         />
@@ -85,10 +87,36 @@ const StatsScreen = () => {
                         <p>{user?.elo ?? 1000}</p>
                     </div>
 
+                    <div className="buttonWrapper">
+                        <OptionsButton options={["hola", "adios", "aaa"]}/>
+                    </div>
+
+                    <PieChartWithCustomizedLabel
+                        data={keys.map(key => ({
+                            name: key,
+                            value: key != "totalMatches" ? user?.[key] ?? 0 : Number(user?.wins) + Number(user?.losses)
+                        }))}
+                    />
+
                 </div>
                 <div className="statsContainer">
                     <div className="topStatsDiv">
-
+                        <div className="chartDiv">
+                            <SimpleBarChart
+                                data={
+                                    sortChart(
+                                        playersData.map(user => ({
+                                            name: user.username,
+                                            uv: Number(user.losses),
+                                            pv: Number(user.wins),
+                                            amt: Number(Number(user.losses) + Number(user.wins))
+                                        })).sort((a, b) => a.pv - b.pv),
+                                        currentFilter,
+                                        filterDescending
+                                    )
+                                }
+                            />
+                        </div>
                     </div>
                     <div className="bottomStatsContainer">
                         <div className="bottomStatsLeftDiv">
@@ -100,7 +128,7 @@ const StatsScreen = () => {
                                     setValue={setNumberOfPlayers}
                                 />
                             </div>
-                            <UsersTable users={playersData} setCurrentFilter={setCurrentFilter} toggleDescending={toggleDescending}/>
+                            <UsersTable users={playersData} setCurrentFilter={setCurrentFilter} toggleDescending={toggleDescending} />
 
                         </div>
                         <div className="bottomStatsRightDiv">
