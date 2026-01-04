@@ -8,6 +8,7 @@ import { convert64ToURL, sortChart } from '../../helper';
 import { fetchTopUsers } from '../../helper.fetching';
 import { toast } from 'react-toastify';
 import { SimpleBarChart } from '../charts/BarCharts';
+import { PieChartWithCustomizedLabel, GapPieChart } from '../charts/PieCharts';
 import StatRow from './statRow/StatRow';
 import winIcon from '../../assets/MEDALS_ICON.png';
 import percentIcon from '../../assets/PERCENT_ICON.png';
@@ -18,7 +19,6 @@ import skullIcon from '../../assets/SKULL_ICON.png';
 import noPfp from '../../assets/USER_LOGGED_NO_PFP_ICON.png'
 import unlogged from '../../assets/USER_UNLOGGED_ICON.png'
 import UsersTable from './usersTable/UsersTable';
-import { PieChartWithCustomizedLabel } from '../charts/PieCharts';
 import OptionsButton from './optionsButton/OptionsButton';
 
 const StatsScreen = () => {
@@ -88,13 +88,13 @@ const StatsScreen = () => {
                     </div>
 
                     <div className="buttonWrapper">
-                        <OptionsButton options={["hola", "adios", "aaa"]}/>
+                        <OptionsButton options={["0", "1", "2", "3"]}/>
                     </div>
 
                     <PieChartWithCustomizedLabel
                         data={keys.map(key => ({
                             name: key,
-                            value: key != "totalMatches" ? user?.[key] ?? 0 : Number(user?.wins) + Number(user?.losses)
+                            value: key != "totalMatches" ? user?.[key] ?? 0 : Number(user?.wins) + Number(user?.losses),
                         }))}
                     />
 

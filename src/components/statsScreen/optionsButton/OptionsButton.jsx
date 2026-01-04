@@ -4,38 +4,29 @@ import './OptionsButton.css'
 const OptionsButton = ({ options }) => {
     const [index, setIndex] = useState(0);
     const [color, setColor] = useState('#0084ff');
-    const COLORS = ['#0084ff', '#34be3b', '#ff3131', '#ff9300', ];
+    const COLORS = ['#0084ff', '#34be3b', '#ff3131', '#ff9d14ff', ];
 
-    useEffect(() => setColor(COLORS[index]), [index]);
+    useEffect(() => {
+        ensureCorrectIndex(index);
+        setColor(COLORS[index]);
+    }, [index]);
 
     const increaseIndex = () => setIndex(i => i + 1);
     const decreaseIndex = () => setIndex(i => i - 1);
 
     const ensureCorrectIndex = (i) => {
-        if (i + 1 > options.length - 1) {
+        if (i > options.length - 1) {
             setIndex(0);
-            return false;
-
-        } else if (i - 1 < 0) {
-            setIndex(options.length - 1)
-            return false;
+        } else if (i < 0) {
+            setIndex(options.length - 1) 
         }
-
-        return true;
     };
 
     const handleClick = (e) => {
         e.preventDefault();
-
-        if (!ensureCorrectIndex(index)) { return; }
-
-        if (e.button === 0) {
-            increaseIndex();
-            return;
-        }
-
-        if (e.button === 2) {
-            decreaseIndex();
+        switch (e.button) {
+            case 0: increaseIndex(); break;
+            case 2: decreaseIndex(); break;
         }
     };
 

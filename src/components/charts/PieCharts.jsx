@@ -44,3 +44,23 @@ export function PieChartWithCustomizedLabel({ isAnimationActive = true, data }) 
         </PieChart>
     );
 }
+
+export function GapPieChart({ isAnimationActive = true, data }) {
+    return (
+        <PieChart style={{ width: '100%', maxWidth: '500px', maxHeight: '32vh', aspectRatio: 1 }} responsive>
+            <Pie
+                data={data}
+                innerRadius="80%"
+                outerRadius="100%"
+
+                cornerRadius="50%"
+                fill="#8884d8"
+
+                paddingAngle={5}
+                dataKey="value"
+                isAnimationActive={isAnimationActive}
+            />
+            <RechartsDevtools />
+        </PieChart>
+    );
+}
