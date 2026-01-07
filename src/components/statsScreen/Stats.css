@@ -18,6 +18,8 @@ body {
   align-items: center;
 }
 
+
+
 .chartDiv {
   display: flex;
   flex-direction: column;

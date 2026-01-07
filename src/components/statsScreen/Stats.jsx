@@ -7,7 +7,7 @@ import { SimpleTab } from '../tabs/Tabs';
 import { convert64ToURL, sortChart } from '../../helper';
 import { fetchTopUsers } from '../../helper.fetching';
 import { toast } from 'react-toastify';
-import { SimpleBarChart } from '../charts/BarCharts';
+import { MarginlessSimpleBarChart, SimpleBarChart, StackedBarChart } from '../charts/BarCharts';
 import { PieChartWithCustomizedLabel, GapPieChart } from '../charts/PieCharts';
 import StatRow from './statRow/StatRow';
 import winIcon from '../../assets/MEDALS_ICON.png';
@@ -27,9 +27,36 @@ const StatsScreen = () => {
     const [numberOfPlayers, setNumberOfPlayers] = useState(5);
     const [playersData, setPlayersData] = useState([]);
     const [keys, setKeys] = useState([]);
+    const [chartIndex, setChartIndex] = useState(0);
     const { user, setUser } = useContext(UserContext);
 
     const icons = [gamesIcon, crownIcon, missIcon, winIcon, skullIcon, percentIcon];
+
+    const charts = [
+        <PieChartWithCustomizedLabel
+            data={keys.map(key => ({
+                name: key,
+                value: key != "totalMatches" ? user?.[key] ?? 0 : Number(user?.wins) + Number(user?.losses),
+            }))}
+        />,
+        <StackedBarChart
+            data={[{
+                name: user?.username,
+                uv: Number(user?.losses),
+                pv: Number(user?.wins),
+                amt: Number(user?.totalMatches)
+            }]}
+        />,
+
+        <MarginlessSimpleBarChart
+            data={[{
+                name: user?.username,
+                uv: Number(user?.losses),
+                pv: Number(user?.wins),
+                amt: Number(user?.totalMatches)
+            }]}
+        />
+    ];
 
     const [values, setValues] = useState([]);
 
@@ -82,21 +109,39 @@ const StatsScreen = () => {
                         />
                     </div>
 
-                    <div className="mainInfo">
+                    <div className={`mainInfo ${!user ? 'blur' : ''}`}>
                         <p>{user?.username ?? "User0123456789"}</p>
-                        <p>{user?.elo ?? 1000}</p>
+                        <p>{user?.elo ?? '0000'}</p>
                     </div>
 
                     <div className="buttonWrapper">
-                        <OptionsButton options={["0", "1", "2", "3"]}/>
+                        <OptionsButton
+                            options={["Pie Chart", "Stacked Chart", "Bar Chart"]}
+                            setValue={setChartIndex}
+                            active={user ? true : false}
+                        />
                     </div>
 
-                    <PieChartWithCustomizedLabel
-                        data={keys.map(key => ({
-                            name: key,
-                            value: key != "totalMatches" ? user?.[key] ?? 0 : Number(user?.wins) + Number(user?.losses),
-                        }))}
-                    />
+
+                    {user ? (
+                        <>
+                            {charts[chartIndex]}
+                        </>
+                    ) : (
+                        <>
+                            <div className="blur">
+                                <MarginlessSimpleBarChart
+                                    data={[{
+                                        name: "user",
+                                        uv: 10,
+                                        pv: 20,
+                                        amt: 30
+                                    }]}
+                                />,
+                            </div>
+                        </>
+                    )}
+
 
                 </div>
                 <div className="statsContainer">
