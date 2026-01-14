@@ -31,10 +31,10 @@ export default function Header({
 
     const changeMultiplayer = () => {
         
-        // if (!user) {
-        //     toast.warn("You must login to play multiplayer.");
-        //     return;
-        // }
+        if (!user) {
+            toast.warn("You must login to play multiplayer.");
+            return;
+        }
 
         if (!isMultiplayer) {
             enableMultiplayer();

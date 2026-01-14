@@ -68,7 +68,7 @@ const LoginForm = () => {
         if (existingUser) {
 
             setUser(existingUser);
-            toast.info(`Logging in as ${existingUser.username}...`);
+            toast.success(`Logging in as ${existingUser.username}...`);
             console.log(`User ${existingUser.username} logged in with id ${existingUser.id}!`);
             navigate("/");
             return;

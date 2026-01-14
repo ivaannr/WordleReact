@@ -135,6 +135,7 @@ async function modifyUser(userID, modifyArgs) {
         return null;
     }
 }
+
 /**
  * Given an id retreives the correspoding player stats
  * @param {String} id the user id
@@ -162,4 +163,61 @@ async function fetchUserStats(id) {
     }
 }
 
-export { fetchTopUsers, registerUser, userExists, modifyUser, fetchUserStats }
+/**
+ * 
+ * @param {String} matchID 
+ * @param {Object} modifyArgs 
+ * @returns {Object} The request response
+ */
+async function modifyMatch(matchId, modifyArgs) {
+    //const URL = `https://wordleapi-qhp7.onrender.com/players/${userID}``;
+    const URL = `http://localhost:8080/matches/${matchId}`;
+    try {
+
+        const res = await fetch(
+            URL,
+            {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(modifyArgs)
+            }
+        );
+
+        if (!res.ok) { throw new Error(`HTTP Error: ${res.status} || Match couldn't be modified.`); }
+
+        const responseData = await res.json();
+
+        return responseData;
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+}
+
+/**
+ * Given an id retreives the opponent data
+ * @param {String} id this user id
+ * @param {String} matchId
+ * @returns {Object} the user stats as an object
+ */
+async function fetchOpponent(thisId, matchId) {
+    const URL = `http://localhost:8080/matches/${matchId}/opponent/${thisId}`;
+    let data;
+
+    try {
+        const res = await fetch(URL);
+
+        if (!res.ok) { throw new Error(`HTTP error ${res.status}`); }
+
+        data = await res.json();
+
+        return data;
+    } catch (error) {
+        console.error("An error occurred:", error);
+        return data;
+    }
+}
+
+export { fetchTopUsers, registerUser, userExists, modifyUser, fetchUserStats, modifyMatch, fetchOpponent }

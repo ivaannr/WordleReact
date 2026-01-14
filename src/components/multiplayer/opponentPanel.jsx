@@ -8,7 +8,8 @@ export default function OppPanel({
   wordCount,
   opponentWordIndex,
   previousOpponentWords,
-  enabled
+  enabled,
+  opponent
 }) {
 
   if (!enabled) {
@@ -48,7 +49,7 @@ export default function OppPanel({
           )
         })}
 
-        <UserStatsPanel />
+        <UserStatsPanel user={opponent}/>
       </div>
     </>
   );

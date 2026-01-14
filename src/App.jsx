@@ -3,7 +3,7 @@ import './WinModal.css'
 import './SettingsModal.css'
 import "react-toastify/dist/ReactToastify.css"
 import { useState, useEffect, useRef, useContext } from 'react'
-import { fetchWord, getWordMatches, replaceAccents, compareStates } from './helper'
+import { fetchWord, getWordMatches, replaceAccents, compareStates, sendInfo } from './helper'
 import { ToastContainer } from 'react-toastify'
 import Header from './components/header/header'
 import MainContainer from './components/main-container/main-container'
@@ -15,7 +15,7 @@ import OppPanel from './components/multiplayer/opponentPanel'
 import LoginForm from './components/loginForm/loginForm'
 import Footer from './components/footer/footer'
 import { UserContext } from './context/UserContext'
-import { modifyUser } from './helper.fetching'
+import { fetchOpponent, modifyMatch, modifyUser } from './helper.fetching'
 import UserStatsPanel from './components/main-container/userStatsPanel/UserStatsPanel'
 
 let indexmap = new Map([
@@ -60,6 +60,8 @@ export default function App() {
   const [hasWon, setHasWon] = useState(false);
   const [hasOpponentWon, setHasOpponentWon] = useState(false);
   const [areKeysEnabled, setAreKeysEnabled] = useState(true);
+  const [currentMatchId, setCurrentMatchId] = useState('');
+  const [opponent, setOpponent] = useState({})
 
   const { user, setUser } = useContext(UserContext);
 
@@ -152,6 +154,10 @@ export default function App() {
     }
   }, [hasOpponentWon]);
 
+  useEffect(() => console.log({ opponent }), [opponent]);
+
+  useEffect(() => { console.log("current match id: ", currentMatchId); }, [currentMatchId]);
+
   useEffect(() => {
 
     if (!isMultiplayer) {
@@ -162,7 +168,6 @@ export default function App() {
 
       return;
     }
-
     if (socket.current) { return; }
 
     //socket.current = new WebSocket("https://wordleapi-qhp7.onrender.com/ws");
@@ -170,14 +175,60 @@ export default function App() {
 
     socket.current.onopen = () => {
       console.log("Successfully connected to the server");
+
     };
 
     socket.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
       if (data) {
-        const data = JSON.parse(event.data);
+
         console.log("Data received:", data);
+
+        if (data.type === 'playerReceivedJoinMessage') {
+          const getOpponentInfo = async () => {
+            let opp = await fetchOpponent(user.id, currentMatchId);
+            setOpponent(opp);
+          }
+          
+          getOpponentInfo();
+        }
+
+        if (data.type === 'playerJoined') {
+          const fetchOtherinfo = async () => {
+
+            let opp;
+            if (currentMatchId) {
+              opp = await fetchOpponent(user.id, currentMatchId);
+            }
+            sendInfo(socket.current,
+              {
+                type: 'playerReceivedJoinMessage',
+                senderId: user.id,
+                message: 'Received join message'
+              }
+            );
+            setOpponent(opp);
+          };
+          fetchOtherinfo();
+          return;
+        }
+
+        if (data.matchId) {
+          setCurrentMatchId(data.matchId);
+          const modifyCurrMatch = async () => {
+            await modifyMatch(
+              data?.matchId,
+              data?.playingAsNumber === 1
+                ? { player1: user }
+                : { player2: user }
+            );
+          };
+
+          modifyCurrMatch();
+
+          return;
+        }
 
         setPreviousOpponentWords(prev => [...prev, data]);
         setOpponentData(data);
@@ -288,6 +339,7 @@ export default function App() {
         opponentWordIndex={opponentWordIndex}
         previousOpponentWords={previousOpponentWords}
         enabled={isMultiplayer}
+        opponent={opponent}
       />
 
       <MainContainer
