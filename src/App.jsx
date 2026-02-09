@@ -64,6 +64,7 @@ export default function App() {
   const [opponent, setOpponent] = useState({})
 
   const { user, setUser } = useContext(UserContext);
+  const socketUrl = import.meta.env.VITE_WEB_SOCKET_URL;
 
   const socket = useRef(null);
 
@@ -170,8 +171,7 @@ export default function App() {
     }
     if (socket.current) { return; }
 
-    //socket.current = new WebSocket("https://wordleapi-qhp7.onrender.com/ws");
-    socket.current = new WebSocket("ws://localhost:8080/ws");
+    socket.current = new WebSocket(socketUrl);
 
     socket.current.onopen = () => {
       console.log("Successfully connected to the server");

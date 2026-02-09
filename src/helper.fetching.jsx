@@ -1,13 +1,12 @@
 import { sortPlayers } from './helper'
-
+const baseUrl = import.meta.env.VITE_BASE_URL;
 /**
  * Gets the top n users
  * @param {Number} top the number of players to fetch 
  * @returns {Array<Object>} an array with the fetched players
  */
 async function fetchTopUsers(top, filter, descending = true) {
-    // const URL = `https://wordleapi-qhp7.onrender.com/players`;
-    const URL = `http://localhost:8080/players`;
+    const URL = `${baseUrl}/players`;
 
     try {
         const res = await fetch(URL);
@@ -37,8 +36,7 @@ async function fetchTopUsers(top, filter, descending = true) {
  * @returns The response from the API in json.
  */
 async function registerUser(user) {
-    //const URL = `https://wordleapi-qhp7.onrender.com/players`;
-    const URL = `http://localhost:8080/players`;
+    const URL = `${baseUrl}/players`;
     try {
 
         const res = await fetch(
@@ -71,8 +69,7 @@ async function registerUser(user) {
  * @returns {Object} the user data
  */
 async function userExists(userdata) {
-    //const URL = `https://wordleapi-qhp7.onrender.com/players`;
-    const URL = `http://localhost:8080/players/find`;
+    const URL = `${baseUrl}/players/find`;
     try {
 
         const res = await fetch(
@@ -110,8 +107,7 @@ async function userExists(userdata) {
  * @returns {Object} The modified user
  */
 async function modifyUser(userID, modifyArgs) {
-    //const URL = `https://wordleapi-qhp7.onrender.com/players/${userID}``;
-    const URL = `http://localhost:8080/players/${userID}`;
+    const URL = `${baseUrl}/players/${userID}`;
     try {
 
         const res = await fetch(
@@ -142,7 +138,7 @@ async function modifyUser(userID, modifyArgs) {
  * @returns {Object} the user stats as an object
  */
 async function fetchUserStats(id) {
-    const URL = `http://localhost:8080/players/data/${id}`;
+    const URL = `${baseUrl}/players/data/${id}`;
 
     try {
         const res = await fetch(URL);
@@ -170,8 +166,7 @@ async function fetchUserStats(id) {
  * @returns {Object} The request response
  */
 async function modifyMatch(matchId, modifyArgs) {
-    //const URL = `https://wordleapi-qhp7.onrender.com/players/${userID}``;
-    const URL = `http://localhost:8080/matches/${matchId}`;
+    const URL = `${baseUrl}/matches/${matchId}`;
     try {
 
         const res = await fetch(
@@ -203,7 +198,7 @@ async function modifyMatch(matchId, modifyArgs) {
  * @returns {Object} the user stats as an object
  */
 async function fetchOpponent(thisId, matchId) {
-    const URL = `http://localhost:8080/matches/${matchId}/opponent/${thisId}`;
+    const URL = `${baseUrl}/matches/${matchId}/opponent/${thisId}`;
     let data;
 
     try {
