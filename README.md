@@ -10,5 +10,5 @@
 
 --- 
 
-### https://wordleapi-qhp7.onrender.com
-
+> [!NOTE]
+> Este proyecto será migrado a **Angular** próximamente.
